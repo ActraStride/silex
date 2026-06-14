@@ -31,3 +31,32 @@ Debido a que el navegador restringe la carga de módulos locales de JavaScript (
 ```bash
 git clone https://github.com/TU_USUARIO/threeJS-silixe.git
 cd threeJS-silixe
+```
+
+### 2. Levantar un servidor local rápido
+Puedes usar cualquiera de las siguientes herramientas estándar que tengas instaladas en tu sistema:
+
+* **Con Python** (Si cuentas con Python 3):
+  ```bash
+  python3 -m http.server 8000
+  ```
+* **Con PHP**:
+  ```bash
+  php -S localhost:8000
+  ```
+* **Con Node.js**:
+  ```bash
+  npx serve
+  ```
+
+### 3. Ejecutar en el navegador
+Abre tu navegador de preferencia y accede a:
+`http://localhost:8000` (o el puerto indicado por el servicio que levantaste).
+
+---
+
+## 📈 Próximos Pasos (Roadmap)
+
+* [ ] **Carga de Texturas PBR:** Integración del catálogo de acabados reales del proveedor de Formica (maderas y lisos) usando `THREE.TextureLoader`.
+* [ ] **Modelos de Vitrinas:** Implementación de las funciones de ensamblaje para los modelos restantes (Aparadores y Torres) basándose en los parámetros de la base, cuerpo y corona.
+* [ ] **API de WhatsApp:** Vinculación del botón de cotización para enviar los parámetros exactos del diseño (ancho, alto, tipo de vitrina, textura y costo estimado) prellenados en un mensaje directo de WhatsApp.
