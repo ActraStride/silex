@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandbox Three.js - Vitrinas Sílice</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; background-color: #1a2230; font-family: sans-serif; color: #fff; overflow: hidden; }
+        #app { display: flex; width: 100vw; height: 100vh; }
+        #canvas-container { flex-grow: 1; height: 100%; }
+        #controls-panel { width: 300px; padding: 20px; background-color: #111622; border-right: 1px solid #2d3748; display: flex; flex-direction: column; gap: 15px; }
+        label { font-size: 0.9rem; color: #a0aec0; }
+        input[type="range"] { width: 100%; margin-top: 5px; }
+        .price { font-size: 1.5rem; font-weight: bold; color: #3182ce; margin-top: 20px; }
+    </style>
+
+    <!-- El Import Map le enseña al navegador dónde encontrar las librerías locales -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "./js/vendor/three/three.module.js",
+            "three/addons/": "./js/vendor/three/"
+        }
+    }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <!-- Panel de control lateral para la vitrina -->
+        <div id="controls-panel">
+            <h2>Configurador</h2>
+            
+            <div>
+                <label>Ancho: <span id="ancho-val">100</span> cm</label>
+                <input type="range" id="ancho-slider" min="50" max="200" value="100">
+            </div>
+
+            <div>
+                <label>Alto: <span id="alto-val">120</span> cm</label>
+                <input type="range" id="alto-slider" min="80" max="220" value="120">
+            </div>
+
+            <div class="price">Est: <span id="precio-val">$4,500</span> MXN</div>
+        </div>
+
+        <!-- Contenedor del lienzo 3D -->
+        <div id="canvas-container"></div>
+    </div>
+
+    <!-- Script principal como Módulo ES6 -->
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>
