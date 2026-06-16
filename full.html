@@ -66,7 +66,7 @@ html, body {
   backdrop-filter: blur(28px) saturate(130%);
   border-right: 1px solid var(--border-warm);
   box-shadow: 6px 0 48px rgba(0,0,0,0.55);
-  overflow: hidden; /* el scroll va en #scroll-area */
+  overflow: hidden;
   position: relative;
   z-index: 10;
 }
@@ -77,7 +77,6 @@ html, body {
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0 16px 16px;
-  /* Forzar estilo de scrollbar */
   scrollbar-width: thin;
   scrollbar-color: rgba(200,155,80,0.18) transparent;
 }
@@ -171,8 +170,6 @@ html, body {
 }
 
 /* ── Slider row ── */
-.slider-row {}
-
 .slider-label {
   display: flex;
   justify-content: space-between;
@@ -199,7 +196,6 @@ input[type="range"] {
   outline: none;
   cursor: pointer;
 }
-
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 13px; height: 13px;
@@ -239,7 +235,6 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
   padding: 0;
 }
-
 .swatch-disk {
   width: 100%;
   aspect-ratio: 1;
@@ -263,16 +258,13 @@ input[type="range"]::-moz-range-thumb {
 }
 .swatch-btn.active span { color: var(--text-main); }
 
-/* swatches madera */
+/* colores madera */
 .sw-nogal  { background: linear-gradient(145deg,#7a4e2d,#502e10); }
 .sw-blanco { background: linear-gradient(145deg,#f0ece2,#d8d2c2); }
 .sw-negro  { background: linear-gradient(145deg,#252525,#0f0f0f); }
 .sw-encino { background: linear-gradient(145deg,#d0b47c,#a88040); }
-/* swatches vidrio */
-.sw-claro {
-  background: linear-gradient(145deg,rgba(190,225,255,0.45),rgba(130,185,240,0.25));
-  border: 1px solid rgba(140,195,255,0.35) !important;
-}
+/* colores vidrio */
+.sw-claro      { background: linear-gradient(145deg,rgba(190,225,255,0.45),rgba(130,185,240,0.25)); border: 1px solid rgba(140,195,255,0.35) !important; }
 .sw-esmerilado { background: linear-gradient(145deg,rgba(215,215,205,0.45),rgba(170,170,160,0.35)); }
 .sw-tintado    { background: linear-gradient(145deg,rgba(90,130,90,0.5),rgba(50,90,50,0.4)); }
 
@@ -281,7 +273,6 @@ input[type="range"]::-moz-range-thumb {
   display: flex;
   gap: 5px;
 }
-
 .opt-btn {
   flex: 1;
   padding: 7px 5px;
@@ -321,7 +312,6 @@ input[type="range"]::-moz-range-thumb {
   font-size: 0.78rem;
   color: var(--text-dim);
 }
-
 .toggle-switch {
   position: relative;
   width: 34px; height: 18px;
@@ -329,7 +319,6 @@ input[type="range"]::-moz-range-thumb {
   flex-shrink: 0;
 }
 .toggle-switch input { display: none; }
-
 .toggle-track {
   position: absolute;
   inset: 0;
@@ -368,7 +357,6 @@ input[type="range"]::-moz-range-thumb {
   opacity: 1;
   pointer-events: all;
 }
-
 .led-btn {
   flex: 1;
   padding: 7px 4px;
@@ -399,9 +387,118 @@ input[type="range"]::-moz-range-thumb {
   box-shadow: 0 0 10px rgba(90,160,255,0.18);
 }
 
-/* ─────────────────────────────────────
+/* ═══════════════════════════════════════════════════════
+   SELECTOR DE MODELO — Cards descriptivas
+   Tres cards apiladas verticalmente, cada una muestra
+   el nombre del modelo, un subtítulo de receta y tres
+   píldoras de características clave.
+═══════════════════════════════════════════════════════ */
+.model-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.model-card {
+  all: unset; /* reset de <button> */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-warm);
+  background: var(--bg-card);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+.model-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
+}
+.model-card.active {
+  border-color: var(--accent-glow);
+  background: var(--accent-soft);
+  box-shadow: 0 0 18px rgba(220,168,90,0.07), inset 0 0 0 1px rgba(220,168,90,0.12);
+}
+
+.model-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.model-card-name {
+  font-size: 0.80rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.2px;
+}
+.model-card.active .model-card-name {
+  color: var(--accent-bright);
+}
+
+.model-card-tag {
+  font-size: 0.57rem;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.model-card.active .model-card-tag {
+  color: var(--accent);
+}
+
+.model-card-desc {
+  font-size: 0.67rem;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+
+/* Píldoras de características */
+.model-pills {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.model-pill {
+  font-size: 0.58rem;
+  padding: 2px 7px;
+  border-radius: 20px;
+  border: 1px solid var(--border-warm);
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.02);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+.model-card.active .model-pill {
+  border-color: rgba(220,168,90,0.25);
+  color: var(--accent);
+}
+
+/* Indicador activo — punto lateral */
+.model-card-name::before {
+  content: '';
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: transparent;
+  margin-right: 6px;
+  vertical-align: middle;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.model-card.active .model-card-name::before {
+  background: var(--accent-glow);
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+/* ═══════════════════════════════════════════════════════
    PRECIO — fijo al fondo del panel
-───────────────────────────────────── */
+═══════════════════════════════════════════════════════ */
 .price-footer {
   flex-shrink: 0;
   padding: 13px 16px 14px;
@@ -415,7 +512,6 @@ input[type="range"]::-moz-range-thumb {
   align-items: flex-end;
   margin-bottom: 4px;
 }
-
 .price-label-small {
   font-size: 0.58rem;
   letter-spacing: 2.2px;
@@ -425,7 +521,6 @@ input[type="range"]::-moz-range-thumb {
   align-self: flex-start;
   padding-top: 6px;
 }
-
 .price-amount {
   font-size: 1.7rem;
   font-weight: 800;
@@ -435,14 +530,12 @@ input[type="range"]::-moz-range-thumb {
   line-height: 1;
   transition: color 0.25s;
 }
-
 .price-currency {
   font-size: 0.75rem;
   color: var(--text-dim);
   margin-left: 3px;
   font-weight: 400;
 }
-
 .price-note {
   font-size: 0.59rem;
   color: var(--text-muted);
@@ -456,7 +549,6 @@ input[type="range"]::-moz-range-thumb {
   overflow: hidden;
   position: relative;
 }
-
 .ticker-line {
   font-size: 0.60rem;
   color: var(--accent);
@@ -492,6 +584,41 @@ input[type="range"]::-moz-range-thumb {
   color: rgba(200,155,70,0.18);
   pointer-events: none;
   text-transform: uppercase;
+  transition: opacity 0.3s;
+}
+
+/* Badge modelo activo — top-left del visor */
+.model-badge {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  background: rgba(12,8,3,0.72);
+  border: 1px solid var(--border-warm);
+  border-radius: 7px;
+  padding: 6px 11px;
+  pointer-events: none;
+  backdrop-filter: blur(14px);
+  transition: opacity 0.25s;
+}
+.model-badge-eyebrow {
+  font-size: 0.54rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+.model-badge-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-glow);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.5px;
+}
+.model-badge-recipe {
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+  letter-spacing: 0.2px;
 }
 
 /* Hint de interacción */
@@ -507,7 +634,7 @@ input[type="range"]::-moz-range-thumb {
   white-space: nowrap;
 }
 
-/* Badge de librería — top-right */
+/* Badge de librería — top-right del visor */
 .lib-badge {
   position: absolute;
   top: 14px;
@@ -535,7 +662,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* ═══════════════════════════════════════════════════════
-   RESPONSIVO MÍNIMO (panel colapsable en móvil)
+   RESPONSIVO MÍNIMO
 ═══════════════════════════════════════════════════════ */
 @media (max-width: 680px) {
   :root { --panel-w: 100%; }
@@ -547,11 +674,15 @@ input[type="range"]::-moz-range-thumb {
     border-bottom: 1px solid var(--border-warm);
   }
   #canvas-container { height: 50vh; }
+  .model-badge { display: none; }
 }
 
 /* Motion reduced */
 @media (prefers-reduced-motion: reduce) {
-  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 </style>
 
@@ -584,10 +715,59 @@ input[type="range"]::-moz-range-thumb {
 
     <div id="scroll-area">
 
-      <!-- DIMENSIONES -->
+      <!-- ── MODELO ── -->
+      <div class="section">
+        <div class="section-label">Modelo</div>
+
+        <div class="model-cards">
+
+          <button class="model-card active" data-modelo="modeloA" aria-pressed="true">
+            <div class="model-card-header">
+              <span class="model-card-name">Modelo A</span>
+              <span class="model-card-tag">Clásico</span>
+            </div>
+            <p class="model-card-desc">Base sólida con zócalo, cuerpo de madera y frente de vidrio.</p>
+            <div class="model-pills">
+              <span class="model-pill">Base estándar</span>
+              <span class="model-pill">Costados madera</span>
+              <span class="model-pill">Corona decorativa</span>
+            </div>
+          </button>
+
+          <button class="model-card" data-modelo="modeloB" aria-pressed="false">
+            <div class="model-card-header">
+              <span class="model-card-name">Modelo B</span>
+              <span class="model-card-tag">Expositor</span>
+            </div>
+            <p class="model-card-desc">Cuerpo completamente acristalado para máxima visibilidad. Base con cajón.</p>
+            <div class="model-pills">
+              <span class="model-pill">Base con cajón</span>
+              <span class="model-pill">Vidrio completo</span>
+              <span class="model-pill">Sin corona</span>
+            </div>
+          </button>
+
+          <button class="model-card" data-modelo="modeloC" aria-pressed="false">
+            <div class="model-card-header">
+              <span class="model-card-name">Modelo C</span>
+              <span class="model-card-tag">Minimalista</span>
+            </div>
+            <p class="model-card-desc">Perfil contenido con tapa plana. Costados de madera y base limpia.</p>
+            <div class="model-pills">
+              <span class="model-pill">Base estándar</span>
+              <span class="model-pill">Costados madera</span>
+              <span class="model-pill">Tapa plana</span>
+            </div>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- ── DIMENSIONES ── -->
       <div class="section">
         <div class="section-label">Dimensiones</div>
         <div class="card">
+
           <div class="slider-row">
             <div class="slider-label">
               Ancho
@@ -614,10 +794,11 @@ input[type="range"]::-moz-range-thumb {
             <input type="range" id="profundidad-slider" min="35" max="90" value="50" step="5"
                    aria-label="Profundidad en centímetros">
           </div>
+
         </div>
       </div>
 
-      <!-- ACABADO MADERA -->
+      <!-- ── MADERA ── -->
       <div class="section">
         <div class="section-label">Madera</div>
         <div class="card">
@@ -642,7 +823,7 @@ input[type="range"]::-moz-range-thumb {
         </div>
       </div>
 
-      <!-- VIDRIO -->
+      <!-- ── VIDRIO ── -->
       <div class="section">
         <div class="section-label">Vidrio</div>
         <div class="card">
@@ -663,7 +844,7 @@ input[type="range"]::-moz-range-thumb {
         </div>
       </div>
 
-      <!-- PUERTAS -->
+      <!-- ── PUERTAS ── -->
       <div class="section">
         <div class="section-label">Puertas</div>
         <div class="card">
@@ -672,15 +853,15 @@ input[type="range"]::-moz-range-thumb {
             <div class="sub-label">Cantidad</div>
             <div class="opts-row">
               <button class="opt-btn active" data-npuertas="2" aria-pressed="true">2 puertas</button>
-              <button class="opt-btn" data-npuertas="4" aria-pressed="false">4 puertas</button>
+              <button class="opt-btn"        data-npuertas="4" aria-pressed="false">4 puertas</button>
             </div>
           </div>
 
           <div>
             <div class="sub-label">Tipo de apertura</div>
             <div class="opts-row">
-              <button class="opt-btn active" data-tipo="abatible" aria-pressed="true">⬡ Abatibles</button>
-              <button class="opt-btn" data-tipo="corrediza" aria-pressed="false">⇄ Corredizas</button>
+              <button class="opt-btn active" data-tipo="abatible"  aria-pressed="true">⬡ Abatibles</button>
+              <button class="opt-btn"        data-tipo="corrediza" aria-pressed="false">⇄ Corredizas</button>
             </div>
           </div>
 
@@ -696,7 +877,7 @@ input[type="range"]::-moz-range-thumb {
         </div>
       </div>
 
-      <!-- INTERIOR -->
+      <!-- ── INTERIOR ── -->
       <div class="section">
         <div class="section-label">Interior</div>
         <div class="card">
@@ -711,7 +892,7 @@ input[type="range"]::-moz-range-thumb {
         </div>
       </div>
 
-      <!-- ILUMINACIÓN -->
+      <!-- ── ILUMINACIÓN ── -->
       <div class="section">
         <div class="section-label">Iluminación</div>
         <div class="card">
@@ -739,7 +920,7 @@ input[type="range"]::-moz-range-thumb {
 
     </div><!-- /scroll-area -->
 
-    <!-- PRECIO — FIJO AL FONDO -->
+    <!-- ── PRECIO — FIJO AL FONDO ── -->
     <div class="price-footer">
       <div class="price-row">
         <div class="price-label-small">Cotización<br>estimada</div>
@@ -760,32 +941,75 @@ input[type="range"]::-moz-range-thumb {
        VISOR 3D
   ══════════════════════════════════════ -->
   <div id="canvas-container" aria-label="Vista 3D del aparador">
+
+    <!-- Badge del modelo activo — top-left del visor -->
+    <div class="model-badge" id="model-badge" aria-hidden="true">
+      <div class="model-badge-eyebrow">Modelo activo</div>
+      <div class="model-badge-name" id="badge-name">Modelo A</div>
+      <div class="model-badge-recipe" id="badge-recipe">Base estándar · Costados madera · Corona</div>
+    </div>
+
     <div class="lib-badge" aria-hidden="true">
       <div class="lib-badge-label">motor</div>
       <div class="lib-badge-name">VitrinaViewer.js</div>
     </div>
-    <div class="canvas-watermark">Aparador · Modelo 1 / 3</div>
+
+    <div class="canvas-watermark" id="canvas-watermark">Aparador · Modelo A · Clásico</div>
     <div class="canvas-hint">Arrastra · Scroll para zoom</div>
   </div>
 
-</div>
+</div><!-- /app -->
 
 <script type="module" src="./js/main.js"></script>
 
 <script>
-/* ── Ticker de última acción (puro DOM, no necesita el viewer) ── */
+/* ══════════════════════════════════════════════════════════
+   TICKER + BADGE DINÁMICO
+   Puro DOM — no necesita el viewer. Actualiza el badge del
+   visor y el ticker de acciones en tiempo real.
+══════════════════════════════════════════════════════════ */
 (function () {
-  const ticker = document.getElementById('ticker-line');
-  let timer;
+  const ticker    = document.getElementById('ticker-line');
+  const badgeName = document.getElementById('badge-name');
+  const badgeRecipe = document.getElementById('badge-recipe');
+  const watermark = document.getElementById('canvas-watermark');
+  let timerTicker;
+
+  /* Metadatos de los modelos para el badge del visor */
+  const MODEL_META = {
+    modeloA: {
+      label:  'Modelo A',
+      tag:    'Clásico',
+      recipe: 'Base estándar · Costados madera · Corona',
+    },
+    modeloB: {
+      label:  'Modelo B',
+      tag:    'Expositor',
+      recipe: 'Base con cajón · Vidrio completo · Sin corona',
+    },
+    modeloC: {
+      label:  'Modelo C',
+      tag:    'Minimalista',
+      recipe: 'Base estándar · Costados madera · Tapa plana',
+    },
+  };
 
   function flash(msg) {
     ticker.textContent = '› ' + msg;
     ticker.classList.add('visible');
-    clearTimeout(timer);
-    timer = setTimeout(() => ticker.classList.remove('visible'), 2800);
+    clearTimeout(timerTicker);
+    timerTicker = setTimeout(() => ticker.classList.remove('visible'), 2800);
   }
 
-  // Sliders
+  function updateModelBadge(key) {
+    const meta = MODEL_META[key];
+    if (!meta) return;
+    badgeName.textContent   = meta.label;
+    badgeRecipe.textContent = meta.recipe;
+    watermark.textContent   = `Aparador · ${meta.label} · ${meta.tag}`;
+  }
+
+  /* ── Sliders ── */
   const sliderMap = {
     'ancho-slider':       v => `Ancho → ${v} cm`,
     'alto-slider':        v => `Alto → ${v} cm`,
@@ -798,27 +1022,35 @@ input[type="range"]::-moz-range-thumb {
     if (el) el.addEventListener('input', () => flash(fmt(el.value)));
   });
 
-  // Botones de grupo
-  document.querySelectorAll('[data-acabado],[data-vidrio],[data-npuertas],[data-tipo],[data-temp]')
+  /* ── Grupos de botones (todos los data-*) ── */
+  const labelMap = {
+    acabado:  v => `Madera → ${v}`,
+    vidrio:   v => `Vidrio → ${v}`,
+    npuertas: v => `Puertas → ${v}`,
+    tipo:     v => `Apertura → ${v}`,
+    temp:     v => `LED → ${v}`,
+    modelo:   v => `Modelo → ${MODEL_META[v]?.label ?? v}`,
+  };
+
+  document.querySelectorAll('[data-acabado],[data-vidrio],[data-npuertas],[data-tipo],[data-temp],[data-modelo]')
     .forEach(btn => {
       btn.addEventListener('click', () => {
         const key   = Object.keys(btn.dataset)[0];
         const value = btn.dataset[key];
-        const labels = {
-          acabado: `Madera → ${value}`,
-          vidrio:  `Vidrio → ${value}`,
-          npuertas: `Puertas → ${value}`,
-          tipo:    `Tipo → ${value}`,
-          temp:    `LED → ${value}`,
-        };
-        flash(labels[key] || value);
+        const fmt   = labelMap[key];
+        if (fmt) flash(fmt(value));
+        /* Actualizar badge del visor cuando cambia el modelo */
+        if (key === 'modelo') updateModelBadge(value);
       });
     });
 
-  // LED toggle
+  /* ── LED toggle ── */
   const ledToggle = document.getElementById('led-toggle');
-  if (ledToggle) ledToggle.addEventListener('change', () =>
-    flash(`LED → ${ledToggle.checked ? 'encendido' : 'apagado'}`));
+  if (ledToggle) {
+    ledToggle.addEventListener('change', () =>
+      flash(`LED → ${ledToggle.checked ? 'encendido' : 'apagado'}`));
+  }
+
 })();
 </script>
 </body>
