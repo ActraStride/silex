@@ -3,284 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aparador Línea Sílice · Vitrinas Sílice</title>
+<title>Aparador Sílice 01 · Vitrinas Sílice</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap" rel="stylesheet">
 
 <style>
-/* ═══════════════════════════════════════════════════════
-   TOKENS — mismos valores que el configurador full
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════
+   FICHA DE TALLER — sistema de diseño
+   Inspirado en el plano acotado de un carpintero: papel kraft,
+   tinta de madera, cotas técnicas, cifras en mono como medidas
+   reales. El objeto manda; el panel es la ficha que lo acompaña.
+═══════════════════════════════════════════════════════════════ */
 :root {
-  --bg-deep:        #120e07;
-  --bg-page:        #1c150c;
-  --bg-card:        rgba(255, 238, 200, 0.03);
-  --border-warm:    rgba(200, 155, 80, 0.14);
-  --border-active:  rgba(220, 175, 100, 0.45);
-  --accent:         #b8813a;
-  --accent-glow:    #dca85a;
-  --accent-bright:  #f0c870;
-  --accent-soft:    rgba(184, 129, 58, 0.13);
-  --text-main:      #ede0c8;
-  --text-dim:       #8a7a62;
-  --text-muted:     #4e4232;
-  --sep:            rgba(200, 155, 80, 0.10);
-  --radius-card:    10px;
-  --radius-btn:     7px;
+  /* Color — paleta de taller, no de "dashboard premium" */
+  --kraft:         #f3ead9;   /* papel kraft claro, base de página */
+  --kraft-deep:     #e9dcc3;   /* papel en sombra / paneles hundidos */
+  --ink:            #2a2118;   /* tinta — texto principal, casi negro cálido */
+  --ink-soft:       #6b5d48;   /* texto secundario */
+  --ink-faint:      #a89a82;   /* texto terciario, cotas, hints */
+  --wood-mid:       #8a6a3f;   /* madera media — acento estructural */
+  --wood-deep:      #4a3826;   /* madera oscura — visor, contraste */
+  --rust:           #c4471f;   /* rojo óxido — sello del taller, único acento vivo */
+  --rust-soft:      rgba(196, 71, 31, 0.10);
+  --line:           rgba(42, 33, 24, 0.14);   /* líneas de plano/cota */
+  --line-soft:      rgba(42, 33, 24, 0.08);
+  --paper-card:     #fbf6ec;
+  --radius:         3px;
+  --font-display:   'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body:       'Source Serif 4', Georgia, serif;
+  --font-mono:       'IBM Plex Mono', 'Courier New', monospace;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   width: 100%;
-  background: var(--bg-page);
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  color: var(--text-main);
+  background: var(--kraft);
+  font-family: var(--font-body);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
 
+/* ═══ Textura de papel sutil — kraft, no glassmorphism ═══ */
+body {
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(138,106,63,0.05), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(138,106,63,0.04), transparent 50%);
+}
+
 /* ═══════════════════════════════════════════════════════
-   CONTEXTO DE PÁGINA — simula contenido alrededor del widget
+   CONTEXTO DE PÁGINA
 ═══════════════════════════════════════════════════════ */
 .page-wrap {
-  max-width: 1180px;
+  max-width: 1220px;
   margin: 0 auto;
-  padding: 48px 24px 96px;
+  padding: 56px 24px 100px;
+}
+
+.page-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
 }
 
 .page-eyebrow {
-  font-size: 0.62rem;
-  letter-spacing: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 10px;
+  color: var(--rust);
+  margin-bottom: 8px;
 }
 
 .page-title {
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  font-weight: 700;
   letter-spacing: -0.5px;
-  margin-bottom: 28px;
+  color: var(--ink);
+}
+
+.page-ref {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  text-align: right;
+  line-height: 1.6;
+  white-space: nowrap;
 }
 
 /* ═══════════════════════════════════════════════════════
-   WIDGET — franja producto: texto + visor
+   WIDGET — ficha de producto
 ═══════════════════════════════════════════════════════ */
 .product-widget {
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
+  grid-template-columns: 1.2fr 1fr;
   gap: 0;
-  background: var(--bg-deep);
-  border: 1px solid var(--border-warm);
-  border-radius: 16px;
+  background: var(--paper-card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  box-shadow: 0 30px 70px -20px rgba(42,33,24,0.22);
 }
 
-/* ── Columna de texto ── */
-.product-info {
-  padding: 36px 38px;
-  display: flex;
-  flex-direction: column;
-}
-
-.product-tag {
-  font-size: 0.58rem;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.product-name {
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.3px;
-  margin-bottom: 10px;
-  line-height: 1.2;
-}
-
-.product-desc {
-  font-size: 0.84rem;
-  color: var(--text-dim);
-  line-height: 1.7;
-  margin-bottom: 26px;
-}
-
-/* ── Sección de controles ── */
-.controls-block + .controls-block { margin-top: 22px; }
-
-.controls-label {
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 2.4px;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 11px;
-  opacity: 0.85;
-}
-
-/* Sliders de medidas */
-.dim-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-warm);
-  border-radius: var(--radius-card);
-  padding: 14px 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
-}
-
-.slider-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  font-size: 0.76rem;
-  color: var(--text-dim);
-  margin-bottom: 7px;
-}
-.slider-val {
-  font-weight: 700;
-  color: var(--text-main);
-  font-size: 0.82rem;
-  font-variant-numeric: tabular-nums;
-}
-
-input[type="range"] {
-  width: 100%;
-  -webkit-appearance: none;
-  appearance: none;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--sep);
-  outline: none;
-  cursor: pointer;
-}
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 13px; height: 13px;
-  border-radius: 50%;
-  background: var(--accent-bright);
-  box-shadow: 0 0 8px rgba(240,200,112,0.45);
-  cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.1s;
-}
-input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.25);
-  box-shadow: 0 0 12px rgba(240,200,112,0.6);
-}
-input[type="range"]::-moz-range-thumb {
-  width: 13px; height: 13px;
-  border-radius: 50%;
-  background: var(--accent-bright);
-  border: none;
-  box-shadow: 0 0 8px rgba(240,200,112,0.45);
-}
-
-/* Swatches de madera */
-.swatches {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 7px;
-}
-.swatch-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-.swatch-disk {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 8px;
-  border: 2px solid transparent;
-  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
-}
-.swatch-btn span {
-  font-size: 0.60rem;
-  color: var(--text-muted);
-  text-align: center;
-  line-height: 1.2;
-  transition: color 0.15s;
-}
-.swatch-btn:hover .swatch-disk { transform: scale(1.05); }
-.swatch-btn.active .swatch-disk {
-  border-color: var(--accent-bright);
-  box-shadow: 0 0 10px rgba(240,200,112,0.35);
-  transform: scale(1.08);
-}
-.swatch-btn.active span { color: var(--text-main); }
-
-.sw-nogal  { background: linear-gradient(145deg,#7a4e2d,#502e10); }
-.sw-blanco { background: linear-gradient(145deg,#f0ece2,#d8d2c2); }
-.sw-negro  { background: linear-gradient(145deg,#252525,#0f0f0f); }
-.sw-encino { background: linear-gradient(145deg,#d0b47c,#a88040); }
-
-/* ── Precio + CTA ── */
-.product-footer {
-  margin-top: auto;
-  padding-top: 24px;
-  border-top: 1px solid var(--sep);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.price-label-small {
-  font-size: 0.58rem;
-  letter-spacing: 2.2px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-.price-amount {
-  font-size: 1.7rem;
-  font-weight: 800;
-  color: var(--accent-bright);
-  letter-spacing: -0.5px;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-.price-currency {
-  font-size: 0.75rem;
-  color: var(--text-dim);
-  margin-left: 3px;
-  font-weight: 400;
-}
-
-.cta-btn {
-  flex-shrink: 0;
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-glow);
-  color: var(--accent-bright);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  padding: 12px 22px;
-  border-radius: var(--radius-btn);
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
-}
-.cta-btn:hover {
-  background: rgba(220,168,90,0.18);
-  box-shadow: 0 0 16px rgba(220,168,90,0.22);
-  transform: translateY(-1px);
-}
-
-/* ═══════════════════════════════════════════════════════
-   VISOR 3D — columna derecha
-═══════════════════════════════════════════════════════ */
+/* ── VISOR 3D — ahora va primero, el objeto manda ── */
 .product-viewer {
   position: relative;
-
-  background: linear-gradient(160deg, #1a1208, #0e0804);
-  border-left: 1px solid var(--border-warm);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.04), transparent 60%),
+    linear-gradient(165deg, var(--wood-deep), #2c2014);
+  min-height: 460px;
   overflow: hidden;
 }
 
@@ -291,46 +129,358 @@ input[type="range"]::-moz-range-thumb {
   height: 100%;
 }
 
-.canvas-hint {
+/* Marco de "plano técnico" alrededor del visor — esquinas tipo cartabón */
+.viewer-frame-corner {
   position: absolute;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.60rem;
-  color: rgba(200,155,70,0.22);
+  width: 22px; height: 22px;
+  border: 1.5px solid rgba(243,234,217,0.32);
   pointer-events: none;
-  letter-spacing: 1.2px;
-  white-space: nowrap;
-  z-index: 2;
+  z-index: 3;
 }
+.viewer-frame-corner.tl { top: 14px; left: 14px; border-right: none; border-bottom: none; }
+.viewer-frame-corner.tr { top: 14px; right: 14px; border-left: none; border-bottom: none; }
+.viewer-frame-corner.bl { bottom: 14px; left: 14px; border-right: none; border-top: none; }
+.viewer-frame-corner.br { bottom: 14px; right: 14px; border-left: none; border-top: none; }
 
 .lib-badge {
   position: absolute;
-  top: 14px;
-  right: 16px;
-  background: rgba(12,8,3,0.65);
-  border: 1px solid var(--border-warm);
-  border-radius: 6px;
-  padding: 5px 9px;
+  top: 16px; left: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: rgba(243,234,217,0.5);
+  letter-spacing: 0.5px;
+  z-index: 3;
   pointer-events: none;
-  backdrop-filter: blur(10px);
+}
+.lib-badge b { color: rgba(243,234,217,0.85); font-weight: 500; }
+
+.canvas-hint {
+  position: absolute;
+  bottom: 16px; right: 18px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: rgba(243,234,217,0.32);
+  letter-spacing: 0.8px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ── Telemetría WebGL (inyectada por SilexEngine) ──
+   El motor crea su propio div con estilos inline; lo recapamos
+   para que respete la ficha de taller en vez de su tema por defecto. */
+#canvas-container div[style*="monospace"] {
+  font-family: var(--font-mono) !important;
+  background: rgba(20,15,9,0.78) !important;
+  border: 1px solid rgba(243,234,217,0.18) !important;
+  border-radius: 3px !important;
+  font-size: 10px !important;
+  line-height: 1.6;
+}
+
+/* ── COTAS — el elemento signature: acotación de plano técnico ── */
+.dim-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
   z-index: 2;
 }
-.lib-badge-name {
-  font-size: 0.66rem;
-  font-weight: 700;
-  color: var(--accent-glow);
-  font-family: 'Courier New', monospace;
-  letter-spacing: 0.5px;
+.dim-line {
+  position: absolute;
+  background: rgba(243,234,217,0.4);
 }
+.dim-line.h { height: 1px; }
+.dim-line.v { width: 1px; }
+.dim-tick {
+  position: absolute;
+  background: rgba(243,234,217,0.4);
+  width: 1px; height: 7px;
+}
+.dim-tick.h-tick { width: 7px; height: 1px; }
+.dim-label {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: rgba(243,234,217,0.78);
+  background: var(--wood-deep);
+  padding: 1px 5px;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+}
+
+/* ── COLUMNA DE FICHA TÉCNICA ── */
+.product-info {
+  padding: 34px 36px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-tag {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 8px;
+}
+
+.product-name {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+  margin-bottom: 10px;
+  line-height: 1.15;
+}
+
+.product-desc {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  max-width: 46ch;
+}
+
+/* ── Bloques de control, estilo "ficha" con renglón numerado ── */
+.spec-block { border-top: 1px solid var(--line); padding: 14px 0; }
+.spec-block:last-of-type { border-bottom: 1px solid var(--line); }
+
+.spec-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 13px;
+}
+.spec-label::before {
+  content: '';
+  width: 5px; height: 5px;
+  background: var(--rust);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Sliders de medida — etiquetados como cotas ── */
+.dim-row + .dim-row { margin-top: 14px; }
+.dim-row-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 7px;
+}
+.dim-name {
+  font-size: 0.82rem;
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+.dim-value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--wood-mid);
+  font-variant-numeric: tabular-nums;
+}
+.dim-value::after { content: ' cm'; font-weight: 400; color: var(--ink-faint); font-size: 0.74rem; }
+
+input[type="range"] {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 1px;
+  background: var(--line);
+  outline: none;
+  cursor: pointer;
+  margin: 9px 0;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--paper-card);
+  border: 2px solid var(--wood-mid);
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.12s;
+}
+input[type="range"]:hover::-webkit-slider-thumb,
+input[type="range"]:focus-visible::-webkit-slider-thumb {
+  border-color: var(--rust);
+  transform: scale(1.2);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--paper-card);
+  border: 2px solid var(--wood-mid);
+  cursor: pointer;
+}
+input[type="range"]:focus-visible { outline: 2px solid var(--rust); outline-offset: 4px; }
+
+/* Slider de apertura, mismo tratamiento pero sin sufijo cm */
+.angle-value::after { content: '°'; font-weight: 400; color: var(--ink-faint); }
+
+/* ── Swatches de madera — vetas reales, no discos lisos ── */
+.swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.swatch-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: none; border: none; cursor: pointer; padding: 4px 2px;
+  font-family: inherit;
+}
+.swatch-disk {
+  width: 100%; aspect-ratio: 1.3;
+  border-radius: 2px;
+  border: 1px solid var(--line);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 0.15s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.swatch-disk::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(95deg, rgba(0,0,0,0.06) 0px, transparent 1.5px, transparent 5px, rgba(0,0,0,0.04) 6px);
+}
+.swatch-btn span {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  transition: color 0.15s;
+}
+.swatch-btn:hover .swatch-disk { transform: translateY(-1px); }
+.swatch-btn.active .swatch-disk { outline-color: var(--rust); }
+.swatch-btn.active span { color: var(--ink); }
+
+.sw-nogal  { background: linear-gradient(100deg, #7a4e2d, #5c3618); }
+.sw-blanco { background: linear-gradient(100deg, #f2eee4, #ddd6c4); }
+.sw-negro  { background: linear-gradient(100deg, #2b2b2b, #161616); }
+.sw-encino { background: linear-gradient(100deg, #d2b685, #ab8447); }
+
+/* ── Botones de selección tipo "ficha" (vidrio, puertas, apertura) ── */
+.choice-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.choice-btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.choice-btn:hover { border-color: var(--wood-mid); color: var(--ink); }
+.choice-btn.active {
+  border-color: var(--rust);
+  color: var(--rust);
+  background: var(--rust-soft);
+  font-weight: 500;
+}
+
+/* ── Toggle LED ── */
+.toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 13px;
+}
+.toggle-row .dim-name { font-size: 0.82rem; }
+.switch { position: relative; width: 34px; height: 19px; flex-shrink: 0; }
+.switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+.switch-track {
+  position: absolute; inset: 0;
+  background: var(--line);
+  border: 1px solid var(--ink-faint);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+}
+.switch-track::before {
+  content: '';
+  position: absolute;
+  width: 13px; height: 13px;
+  left: 2px; top: 2px;
+  background: var(--paper-card);
+  border-radius: 50%;
+  transition: transform 0.18s;
+}
+.switch input:checked + .switch-track { background: var(--rust); border-color: var(--rust); }
+.switch input:checked + .switch-track::before { transform: translateX(15px); background: #fff; }
+.switch input:focus-visible + .switch-track { outline: 2px solid var(--rust); outline-offset: 2px; }
+
+#led-temp-row {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.22s ease, opacity 0.18s ease, margin-top 0.22s ease;
+}
+#led-temp-row.visible { max-height: 50px; opacity: 1; margin-top: 4px; }
+
+/* ── Footer: precio + CTA ── */
+.product-footer {
+  margin-top: auto;
+  padding-top: 22px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.price-label-small {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 5px;
+}
+.price-amount {
+  font-family: var(--font-mono);
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.price-currency {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--ink-faint);
+  margin-left: 4px;
+}
+
+.cta-btn {
+  flex-shrink: 0;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  color: var(--kraft);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  padding: 13px 20px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.cta-btn:hover { background: var(--rust); border-color: var(--rust); transform: translateY(-1px); }
+.cta-btn:active { transform: translateY(0); }
+.cta-btn:focus-visible { outline: 2px solid var(--rust); outline-offset: 3px; }
 
 /* ═══════════════════════════════════════════════════════
    RESPONSIVO
 ═══════════════════════════════════════════════════════ */
-@media (max-width: 860px) {
+@media (max-width: 880px) {
   .product-widget { grid-template-columns: 1fr; }
-  .product-viewer { height: 400px; order: -1; }
-  .page-wrap { padding: 28px 16px 64px; }
+  .product-viewer { height: 360px; min-height: 360px; }
+  .page-wrap { padding: 32px 16px 72px; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .page-ref { text-align: left; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -353,175 +503,262 @@ input[type="range"]::-moz-range-thumb {
 
 <div class="page-wrap">
 
-  <div class="page-eyebrow">Catálogo · Aparadores</div>
-  <h1 class="page-title">Línea Sílice — Aparador modular</h1>
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">Catálogo · Aparadores</div>
+      <h1 class="page-title">Línea Sílice — Aparador modular</h1>
+    </div>
+    <div class="page-ref">REF. AP-SIL-01<br>TALLER GUADALAJARA</div>
+  </div>
 
   <div class="product-widget">
 
     <!-- ══════════════════════════════════
-         COLUMNA DE INFORMACIÓN
+         VISOR 3D — el objeto va primero
+    ══════════════════════════════════ -->
+    <div class="product-viewer">
+      <div id="canvas-container" aria-label="Vista 3D del aparador"></div>
+
+      <div class="dim-overlay" id="dim-overlay" aria-hidden="true"></div>
+
+      <div class="viewer-frame-corner tl"></div>
+      <div class="viewer-frame-corner tr"></div>
+      <div class="viewer-frame-corner bl"></div>
+      <div class="viewer-frame-corner br"></div>
+
+      <div class="lib-badge"><b>SilexEngine</b> · aparador-silice</div>
+      <div class="canvas-hint">Arrastra · Scroll para zoom</div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         FICHA TÉCNICA / CONTROLES
     ══════════════════════════════════ -->
     <div class="product-info">
-      <div class="product-tag">Vitrinas Sílice</div>
-      <h2 class="product-name">Aparador Modelo 1</h2>
+      <div class="product-tag">Vitrinas Sílice — Hecho a la medida</div>
+      <h2 class="product-name">Aparador Sílice 01</h2>
       <p class="product-desc">
         Estructura en madera maciza con puertas de vidrio templado.
-        Personaliza las medidas y el acabado para ver el resultado
-        en tiempo real antes de cotizar.
+        Ajusta medidas, acabado y vidrio para ver el resultado en
+        tiempo real antes de cotizar tu pieza.
       </p>
 
       <!-- DIMENSIONES -->
-      <div class="controls-block">
-        <div class="controls-label">Dimensiones</div>
-        <div class="dim-card">
-          <div>
-            <div class="slider-label">
-              Ancho
-              <span class="slider-val"><span id="ancho-val">100</span> cm</span>
-            </div>
-            <input type="range" id="ancho-slider" min="50" max="200" value="100" step="5"
-                   aria-label="Ancho en centímetros">
-          </div>
+      <div class="spec-block">
+        <div class="spec-label">Dimensiones</div>
 
-          <div>
-            <div class="slider-label">
-              Alto
-              <span class="slider-val"><span id="alto-val">120</span> cm</span>
-            </div>
-            <input type="range" id="alto-slider" min="80" max="220" value="120" step="5"
-                   aria-label="Alto en centímetros">
+        <div class="dim-row">
+          <div class="dim-row-head">
+            <span class="dim-name">Ancho</span>
+            <span class="dim-value" id="ancho-val">100</span>
           </div>
+          <input type="range" id="ancho-slider" min="50" max="200" value="100" step="5" aria-label="Ancho en centímetros">
+        </div>
 
-          <div>
-            <div class="slider-label">
-              Profundidad
-              <span class="slider-val"><span id="profundidad-val">50</span> cm</span>
-            </div>
-            <input type="range" id="profundidad-slider" min="35" max="90" value="50" step="5"
-                   aria-label="Profundidad en centímetros">
+        <div class="dim-row">
+          <div class="dim-row-head">
+            <span class="dim-name">Alto</span>
+            <span class="dim-value" id="alto-val">120</span>
           </div>
+          <input type="range" id="alto-slider" min="80" max="220" value="120" step="5" aria-label="Alto en centímetros">
+        </div>
+
+        <div class="dim-row">
+          <div class="dim-row-head">
+            <span class="dim-name">Profundidad</span>
+            <span class="dim-value" id="profundidad-val">50</span>
+          </div>
+          <input type="range" id="profundidad-slider" min="35" max="90" value="50" step="5" aria-label="Profundidad en centímetros">
+        </div>
+
+        <div class="dim-row">
+          <div class="dim-row-head">
+            <span class="dim-name">Entrepaños</span>
+            <span class="dim-value" id="entrepanos-val" style="--unit:''">1</span>
+          </div>
+          <input type="range" id="entrepanos-slider" min="0" max="5" value="1" step="1" aria-label="Número de entrepaños">
         </div>
       </div>
 
-      <!-- MADERA -->
-      <div class="controls-block">
-        <div class="controls-label">Acabado</div>
+      <!-- ACABADO -->
+      <div class="spec-block">
+        <div class="spec-label">Acabado de madera</div>
         <div class="swatches">
           <button class="swatch-btn active" data-acabado="nogal" aria-pressed="true">
-            <div class="swatch-disk sw-nogal"></div>
-            <span>Nogal</span>
+            <div class="swatch-disk sw-nogal"></div><span>Nogal</span>
           </button>
           <button class="swatch-btn" data-acabado="blanco" aria-pressed="false">
-            <div class="swatch-disk sw-blanco"></div>
-            <span>Blanco</span>
+            <div class="swatch-disk sw-blanco"></div><span>Blanco</span>
           </button>
           <button class="swatch-btn" data-acabado="negro" aria-pressed="false">
-            <div class="swatch-disk sw-negro"></div>
-            <span>Negro</span>
+            <div class="swatch-disk sw-negro"></div><span>Negro</span>
           </button>
           <button class="swatch-btn" data-acabado="encino" aria-pressed="false">
-            <div class="swatch-disk sw-encino"></div>
-            <span>Encino</span>
+            <div class="swatch-disk sw-encino"></div><span>Encino</span>
           </button>
+        </div>
+      </div>
+
+      <!-- VIDRIO -->
+      <div class="spec-block">
+        <div class="spec-label">Vidrio</div>
+        <div class="choice-row">
+          <button class="choice-btn active" data-vidrio="claro" aria-pressed="true">Claro</button>
+          <button class="choice-btn" data-vidrio="esmerilado" aria-pressed="false">Esmerilado</button>
+          <button class="choice-btn" data-vidrio="tintado" aria-pressed="false">Tintado</button>
+        </div>
+      </div>
+
+      <!-- PUERTAS -->
+      <div class="spec-block">
+        <div class="spec-label">Puertas</div>
+        <div class="choice-row" style="margin-bottom: 10px;">
+          <button class="choice-btn active" data-npuertas="2" aria-pressed="true">2 puertas</button>
+          <button class="choice-btn" data-npuertas="4" aria-pressed="false">4 puertas</button>
+        </div>
+        <div class="choice-row" style="margin-bottom: 14px;">
+          <button class="choice-btn active" data-tipo="abatible" aria-pressed="true">Abatible</button>
+          <button class="choice-btn" data-tipo="corrediza" aria-pressed="false">Corrediza</button>
+        </div>
+
+        <div class="dim-row">
+          <div class="dim-row-head">
+            <span class="dim-name">Apertura</span>
+            <span class="dim-value angle-value" id="apertura-val">0</span>
+          </div>
+          <input type="range" id="apertura-slider" min="0" max="120" value="0" step="5" aria-label="Ángulo de apertura de puertas">
+        </div>
+      </div>
+
+      <!-- ILUMINACIÓN -->
+      <div class="spec-block">
+        <div class="spec-label">Iluminación interior</div>
+        <div class="toggle-row">
+          <span class="dim-name">LED activo</span>
+          <label class="switch">
+            <input type="checkbox" id="led-toggle" aria-label="Activar iluminación LED">
+            <span class="switch-track"></span>
+          </label>
+        </div>
+        <div class="choice-row" id="led-temp-row">
+          <button class="choice-btn active" data-temp="calido" aria-pressed="true">Cálido</button>
+          <button class="choice-btn" data-temp="frio" aria-pressed="false">Frío</button>
         </div>
       </div>
 
       <!-- PRECIO + CTA -->
       <div class="product-footer">
         <div>
-          <div class="price-label-small">Desde</div>
+          <div class="price-label-small">Precio estimado</div>
           <div>
-            <span class="price-amount" id="precio-val">$4,500</span>
+            <span class="price-amount" id="precio-val">$0</span>
             <span class="price-currency">MXN</span>
           </div>
         </div>
-        <button class="cta-btn" id="personalizar-btn">Personalizar todo →</button>
+        <button class="cta-btn" id="personalizar-btn">Cotizar esta pieza →</button>
       </div>
-    </div>
-
-    <!-- ══════════════════════════════════
-         VISOR 3D
-    ══════════════════════════════════ -->
-    <div class="product-viewer">
-      <div id="canvas-container" aria-label="Vista 3D del aparador"></div>
-      <div class="lib-badge" aria-hidden="true">
-        <div class="lib-badge-name">VitrinaViewer.js</div>
-      </div>
-      <div class="canvas-hint">Arrastra · Scroll para zoom</div>
     </div>
 
   </div>
 </div>
 
 <script type="module">
-import { VitrinaViewer } from './js/vitrina-viewer.js';
+import { SilexEngine }   from './js/core/SilexEngine.js';
+import { MaterialCache } from './js/core/MaterialCache.js';
+import { models }        from './js/models/Registry.js';
+import { Configurator }  from './js/ui/Configurator.js';
 
-const viewer = new VitrinaViewer({
-    containerId: 'canvas-container',
-    initialState: {
-        ancho:      100,
-        alto:       120,
-        profundidad: 50,
-        acabado:    'nogal',
-        // resto queda en default: vidrio claro, sin LED, 2 puertas abatibles
+const modeloActivo  = models.aparadorSilice;
+const engine        = new SilexEngine({ containerId: 'canvas-container', showStats: true });
+const materialCache = new MaterialCache();
+
+let state = modeloActivo.aplicarReglas({ ...modeloActivo.defaultState });
+
+function rebuild() {
+    const { group, tick } = modeloActivo.build(state, materialCache);
+
+    engine.setSceneGroup(group);
+    engine.setTickHook(tick);
+    engine.setContactShadowScale(state.ancho * 1.4, state.profundidad * 1.7);
+
+    configurator.setPrecio(modeloActivo.calcularPrecio(state));
+    updateDimOverlay();
+}
+
+const configurator = new Configurator({
+    onChange: (partialState) => {
+        state = modeloActivo.aplicarReglas({ ...state, ...partialState });
+
+        if ('ledTemp' in partialState) {
+            engine.setBloomStrength(partialState.ledTemp === 'frio' ? 0.45 : 0.30);
+        }
+
+        rebuild();
     },
-    onPriceChange: (precio) => {
-        const el = document.getElementById('precio-val');
-        if (el) el.textContent = `$${precio.toLocaleString('es-MX')}`;
-    },
-    showStats: false,
 });
-
-// ─── Referencias DOM ──────────────────────────────────────────
-const q  = (id) => document.getElementById(id);
-const qa = (sel) => document.querySelectorAll(sel);
 
 // ─── Forzar recálculo de tamaño del canvas ────────────────────
 // El renderer mide clientWidth/clientHeight en el constructor; si el
 // grid aún no terminó de asignar la altura de fila en ese instante,
 // el canvas queda con un tamaño menor al del contenedor.
-// Disparamos un resize tras el primer frame y observamos cambios
-// de tamaño del contenedor (sin depender de window.resize).
 requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
 
 const resizeObserver = new ResizeObserver(() => {
     window.dispatchEvent(new Event('resize'));
+    updateDimOverlay();
 });
-resizeObserver.observe(q('canvas-container'));
+resizeObserver.observe(document.getElementById('canvas-container'));
 
-// ─── Sliders de dimensiones ───────────────────────────────────
-function bindSlider(sliderId, displayId, stateKey) {
-    const slider  = q(sliderId);
-    const display = q(displayId);
-    slider.addEventListener('input', () => {
-        const value = parseInt(slider.value);
-        display.textContent = value;
-        viewer.update({ [stateKey]: value });
-    });
+// ─── Cotas de plano técnico — signature element ────────────────
+// Dibuja una cota horizontal (ancho) y una vertical (alto) sobre el
+// visor, leyendo directamente del estado actual. No pretende mapear
+// con precisión la proyección 3D real (eso requeriría reproyectar
+// la cámara); es una referencia esquemática de plano de taller que
+// reacciona a los mismos controles que el modelo 3D.
+function updateDimOverlay() {
+    const overlay = document.getElementById('dim-overlay');
+    if (!overlay) return;
+
+    const w = overlay.clientWidth;
+    const h = overlay.clientHeight;
+    if (!w || !h) return;
+
+    // Caja esquemática centrada, proporciones relativas al ancho/alto reales
+    const maxBoxW = w * 0.42;
+    const maxBoxH = h * 0.5;
+    const ratio = state.ancho / state.alto;
+    let boxW = maxBoxW, boxH = maxBoxW / ratio;
+    if (boxH > maxBoxH) { boxH = maxBoxH; boxW = maxBoxH * ratio; }
+
+    const cx = w * 0.5;
+    const cy = h * 0.54;
+    const left  = cx - boxW / 2;
+    const right = cx + boxW / 2;
+    const top   = cy - boxH / 2;
+    const bot   = cy + boxH / 2;
+
+    const dimY = bot + 26;
+    const dimX = right + 26;
+
+    overlay.innerHTML = `
+      <div class="dim-line h" style="left:${left}px; top:${dimY}px; width:${boxW}px;"></div>
+      <div class="dim-tick" style="left:${left}px; top:${dimY - 3}px;"></div>
+      <div class="dim-tick" style="left:${right}px; top:${dimY - 3}px;"></div>
+      <div class="dim-label" style="left:${cx}px; top:${dimY - 9}px; transform:translateX(-50%);">${state.ancho} cm</div>
+
+      <div class="dim-line v" style="left:${dimX}px; top:${top}px; height:${boxH}px;"></div>
+      <div class="dim-tick h-tick" style="left:${dimX - 3}px; top:${top}px;"></div>
+      <div class="dim-tick h-tick" style="left:${dimX - 3}px; top:${bot}px;"></div>
+      <div class="dim-label" style="left:${dimX + 9}px; top:${cy}px; transform:translateY(-50%);">${state.alto} cm</div>
+    `;
 }
 
-bindSlider('ancho-slider',       'ancho-val',       'ancho');
-bindSlider('alto-slider',        'alto-val',        'alto');
-bindSlider('profundidad-slider', 'profundidad-val', 'profundidad');
-
-// ─── Acabado de madera ─────────────────────────────────────────
-const acabadoBtns = qa('[data-acabado]');
-acabadoBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        acabadoBtns.forEach(b => {
-            b.classList.remove('active');
-            b.setAttribute('aria-pressed', 'false');
-        });
-        btn.classList.add('active');
-        btn.setAttribute('aria-pressed', 'true');
-        viewer.update({ acabado: btn.dataset.acabado });
-    });
-});
-
 // ─── CTA: abrir configurador completo ─────────────────────────
-q('personalizar-btn').addEventListener('click', () => {
+document.getElementById('personalizar-btn').addEventListener('click', () => {
     window.location.href = './full.html';
 });
+
+// ── Primer build ──
+rebuild();
 </script>
 
 </body>

@@ -3,235 +3,278 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VitrinaViewer.js · Demos</title>
+<title>SilexEngine · Demos</title>
+
+<!-- Tipografías del Sistema de Taller -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap" rel="stylesheet">
+
 <style>
+/* ═══════════════════════════════════════════════════════════════
+   FICHA DE TALLER — Sistema de diseño
+═══════════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:       #0e0a05;
-  --bg-card:  rgba(255,240,200,0.03);
-  --border:   rgba(200,155,75,0.14);
-  --border-h: rgba(220,175,100,0.38);
-  --accent:   #c8914a;
-  --glow:     #e0b060;
-  --text:     #ede0c8;
-  --dim:      #7a6a52;
-  --muted:    #3e3428;
-  --radius:   14px;
+  /* Paleta Técnica / Papel kraft */
+  --kraft:         #f3ead9;   /* papel kraft claro, base */
+  --kraft-deep:    #e9dcc3;   /* papel hundido */
+  --ink:           #2a2118;   /* tinta principal */
+  --ink-soft:      #6b5d48;   /* texto secundario */
+  --ink-faint:     #a89a82;   /* cotas y hints */
+  --wood-mid:      #8a6a3f;   /* acento estructural */
+  --rust:          #c4471f;   /* rojo óxido — acento vivo */
+  --rust-soft:     rgba(196, 71, 31, 0.10);
+  --line:          rgba(42, 33, 24, 0.14);   /* líneas técnicas */
+  --paper-card:    #fbf6ec;   /* paneles blancos roto */
+  
+  --radius:        3px;
+
+  /* Tipografía */
+  --font-display:  'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body:     'Source Serif 4', Georgia, serif;
+  --font-mono:     'IBM Plex Mono', 'Courier New', monospace;
 }
 
 html, body {
   min-height: 100%;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--kraft);
+  color: var(--ink);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
 }
 
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(180,120,40,0.07) 0%, transparent 70%);
-  pointer-events: none; z-index: 0;
+body {
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(138,106,63,0.05), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(138,106,63,0.04), transparent 50%);
 }
 
+/* ═══════════════════════════════════════════════════════
+   NAVEGACIÓN Y HERO
+═══════════════════════════════════════════════════════ */
 nav {
   position: relative; z-index: 1;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 22px 48px;
-  border-bottom: 1px solid var(--border);
+  padding: 24px 48px;
+  border-bottom: 1px solid var(--line);
 }
 
 .nav-brand { display: flex; align-items: center; gap: 10px; }
 
 .nav-dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: var(--glow); box-shadow: 0 0 10px var(--glow);
-  animation: blink 3s ease-in-out infinite;
-}
-@keyframes blink {
-  0%,100% { opacity:1; box-shadow:0 0 10px var(--glow); }
-  50%      { opacity:0.4; box-shadow:0 0 4px var(--glow); }
+  background: var(--rust);
 }
 
-.nav-name { font-size:.72rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--dim); font-weight:600; }
+.nav-name { 
+  font-family: var(--font-mono); font-size: .75rem; letter-spacing: 1.5px; 
+  text-transform: uppercase; color: var(--ink); font-weight: 600; 
+}
 .nav-version {
-  font-size:.62rem; font-family:'Courier New',monospace; color:var(--muted);
-  border:1px solid var(--border); border-radius:4px; padding:2px 7px;
+  font-family: var(--font-mono); font-size: .66rem; color: var(--ink-soft);
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 4px 8px;
 }
 
-.hero { position:relative; z-index:1; text-align:center; padding:72px 24px 56px; }
-.hero-eyebrow { font-size:.64rem; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:16px; opacity:.85; }
-.hero h1 { font-size:clamp(2.2rem,5vw,3.4rem); font-weight:800; letter-spacing:-1px; line-height:1.1; margin-bottom:16px; }
-.hero h1 span { color:var(--glow); }
-.hero-desc { font-size:.92rem; color:var(--dim); max-width:480px; margin:0 auto; line-height:1.7; }
+.hero { position: relative; z-index: 1; text-align: center; padding: 72px 24px 56px; }
+.hero-eyebrow { 
+  font-family: var(--font-mono); font-size: .68rem; letter-spacing: 2px; 
+  text-transform: uppercase; color: var(--rust); margin-bottom: 16px; 
+}
+.hero h1 { 
+  font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.4rem); 
+  font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; 
+  color: var(--ink);
+}
+.hero h1 span { color: var(--wood-mid); }
+.hero-desc { 
+  font-family: var(--font-body); font-size: 1.05rem; color: var(--ink-soft); 
+  max-width: 520px; margin: 0 auto; line-height: 1.6; 
+}
 
-.demos-section { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:0 24px 80px; }
+/* ═══════════════════════════════════════════════════════
+   GRILLA DE DEMOS
+═══════════════════════════════════════════════════════ */
+.demos-section { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 24px 80px; }
 
 .section-header {
-  font-size:.60rem; letter-spacing:2.8px; text-transform:uppercase; color:var(--muted);
-  margin-bottom:20px; display:flex; align-items:center; gap:10px;
+  font-family: var(--font-mono); font-size: .66rem; letter-spacing: 2px; 
+  text-transform: uppercase; color: var(--ink-faint); margin-bottom: 24px; 
+  display: flex; align-items: center; gap: 12px;
 }
-.section-header::after { content:''; flex:1; height:1px; background:var(--border); }
+.section-header::after { content: ''; flex: 1; height: 1px; background: var(--line); }
 
-.demos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+.demos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 
 .demo-card {
-  display:block; text-decoration:none;
-  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
-  overflow:hidden;
-  transition:border-color .18s, transform .18s, box-shadow .18s;
+  display: flex; flex-direction: column; text-decoration: none;
+  background: var(--paper-card); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color .18s, transform .18s, box-shadow .18s;
+  box-shadow: 0 10px 30px -10px rgba(42,33,24,0.0);
 }
 .demo-card:hover {
-  border-color:var(--border-h); transform:translateY(-3px);
-  box-shadow:0 12px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(220,175,100,.08);
+  border-color: var(--wood-mid); transform: translateY(-3px);
+  box-shadow: 0 15px 40px -15px rgba(42,33,24,0.15);
 }
 
+/* ═══════════════════════════════════════════════════════
+   THUMBNAILS (MOCKUPS CSS ESTILO PLANO)
+═══════════════════════════════════════════════════════ */
 .card-thumb {
-  width:100%; aspect-ratio:16/9;
-  display:flex; align-items:center; justify-content:center;
-  position:relative; overflow:hidden;
-  border-bottom:1px solid var(--border);
+  width: 100%; aspect-ratio: 16/10;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: var(--kraft-deep);
 }
 
-/* Thumb configurador */
-.thumb-full { background:linear-gradient(145deg,#1a1208,#0e0804); }
-.mock-panel {
-  position:absolute; left:0; top:0; bottom:0; width:30%;
-  background:rgba(22,15,7,.9); border-right:1px solid rgba(200,155,75,.2);
-  display:flex; flex-direction:column; padding:10px 8px; gap:6px;
+/* Malla de dibujo de fondo para los visores */
+.blueprint-grid {
+  position: absolute; inset: 0;
+  background-image: 
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.3;
 }
-.mock-bar { height:4px; border-radius:2px; background:rgba(200,155,75,.18); }
-.mock-bar.accent { background:rgba(200,155,75,.5); width:60%; }
-.mock-bar.short { width:45%; }
-.mock-3d {
-  position:absolute; right:0; top:0; bottom:0; left:30%;
-  background:radial-gradient(ellipse at 60% 50%,rgba(180,120,40,.12),transparent 70%);
-  display:flex; align-items:center; justify-content:center;
-}
+
+/* Cubo esquemático */
 .mock-box {
-  width:60px; height:70px;
-  border:1.5px solid rgba(200,155,75,.35); border-radius:3px;
-  background:rgba(107,66,38,.3);
-  transform:perspective(200px) rotateY(-18deg) rotateX(6deg);
-  box-shadow:4px 4px 16px rgba(0,0,0,.5); position:relative;
+  width: 50px; height: 60px;
+  border: 1.5px solid var(--ink); border-radius: 2px;
+  background: rgba(251, 246, 236, 0.5); /* paper-card semi-transparente */
+  transform: perspective(200px) rotateY(-18deg) rotateX(6deg);
+  position: relative; z-index: 2;
 }
 .mock-box::before {
-  content:''; position:absolute; inset:6px 4px;
-  border:1px solid rgba(200,230,255,.2); border-radius:2px;
-  background:rgba(200,230,255,.04);
+  content: ''; position: absolute; inset: 6px 4px;
+  border: 1px dashed var(--ink-faint); border-radius: 1px;
+}
+.mock-box::after {
+  content: ''; position: absolute; left: 100%; top: 10%; width: 15px; height: 1px; background: var(--rust);
+  box-shadow: 0 30px 0 var(--rust);
 }
 
-/* Thumb embed — franja producto: texto + visor (fiel a widget.html) */
+/* ── 1. Configurador Completo ── */
+.thumb-full { background: var(--kraft); }
+.mock-panel {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 32%;
+  background: var(--paper-card); border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; padding: 12px 10px; gap: 8px; z-index: 2;
+}
+.mock-bar { height: 3px; border-radius: 1px; background: rgba(42,33,24,0.1); }
+.mock-bar.accent { background: var(--rust-soft); border: 1px solid var(--rust); width: 60%; height: 5px; }
+.mock-bar.short { width: 45%; }
+.mock-3d {
+  position: absolute; right: 0; top: 0; bottom: 0; left: 32%;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+
+/* ── 2. Widget Embebido ── */
 .thumb-embed {
-  background:linear-gradient(145deg,#1a1208,#0e0804);
-  display:flex; align-items:stretch; padding:0;
+  background: var(--paper-card);
+  display: flex; align-items: stretch; padding: 12px; gap: 12px;
 }
 .mock-embed-info {
-  flex:1.05; display:flex; flex-direction:column; justify-content:center;
-  padding:14px 14px 14px 16px; gap:6px;
+  flex: 1.2; display: flex; flex-direction: column; justify-content: center; gap: 8px; z-index: 2;
 }
-.mock-embed-tag {
-  width:36%; height:4px; border-radius:2px;
-  background:rgba(200,155,75,.55); margin-bottom:2px;
-}
-.mock-embed-title { width:70%; height:9px; border-radius:2px; background:rgba(230,210,180,.5); }
-.mock-embed-desc { display:flex; flex-direction:column; gap:5px; margin:6px 0 4px; }
-.mock-embed-desc .mock-txt-line { background:rgba(200,180,150,.14); }
-.mock-embed-finishes { display:flex; gap:5px; margin-top:auto; }
+.mock-embed-tag { width: 36%; height: 4px; background: var(--rust); }
+.mock-embed-title { width: 80%; height: 8px; background: var(--ink); }
+.mock-embed-desc { display: flex; flex-direction: column; gap: 4px; margin: 4px 0; }
+.mock-embed-desc .mock-txt-line { background: rgba(42,33,24,0.1); height: 3px; }
+.mock-embed-finishes { display: flex; gap: 4px; margin-top: auto; }
 .mock-embed-finish {
-  width:16px; height:16px; border-radius:4px;
-  border:1.5px solid transparent;
+  width: 14px; height: 14px; border: 1px solid var(--line); border-radius: 2px;
 }
-.mock-embed-finish.nogal  { background:linear-gradient(145deg,#7a4e2d,#502e10); border-color:rgba(240,200,112,.6); }
-.mock-embed-finish.blanco { background:linear-gradient(145deg,#f0ece2,#d8d2c2); }
-.mock-embed-finish.negro  { background:linear-gradient(145deg,#252525,#0f0f0f); }
-.mock-embed-finish.encino { background:linear-gradient(145deg,#d0b47c,#a88040); }
-.mock-embed-price {
-  margin-top:8px; width:34%; height:9px; border-radius:2px;
-  background:rgba(240,200,112,.55);
-}
+.mock-embed-finish.n { background: linear-gradient(100deg, #7a4e2d, #5c3618); }
+.mock-embed-finish.b { background: linear-gradient(100deg, #f2eee4, #ddd6c4); }
+.mock-embed-finish.e { background: linear-gradient(100deg, #d2b685, #ab8447); border-color: var(--rust); }
+.mock-embed-price { margin-top: 8px; width: 40%; height: 8px; background: var(--wood-mid); }
 .mock-viewer-col {
-  flex:1; border-left:1px solid rgba(200,155,75,.18);
-  background:radial-gradient(ellipse at 60% 45%,rgba(180,120,40,.16),transparent 70%);
-  display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+  flex: 1; border: 1px solid var(--line); border-radius: 3px;
+  background: var(--kraft-deep);
+  display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
 }
-.mock-viewer-col .mock-box { width:46px; height:56px; }
+.mock-viewer-col .mock-box { transform: scale(0.7) perspective(200px) rotateY(-18deg) rotateX(6deg); }
 
-/* Thumb mobile — visor fullscreen + bottom sheet */
+/* ── 3. Móvil ── */
 .thumb-mobile {
-  background:linear-gradient(160deg,#1a1208,#0e0804);
-  align-items:flex-end;
+  background: var(--kraft);
+  align-items: flex-end;
 }
 .mock-phone-3d {
-  position:absolute; inset:0;
-  background:radial-gradient(ellipse at 50% 38%,rgba(180,120,40,.14),transparent 65%);
-  display:flex; align-items:center; justify-content:center;
-}
-.mock-phone-3d .mock-box {
-  width:46px; height:56px;
-  transform:perspective(200px) rotateY(-14deg) rotateX(4deg);
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
 }
 .mock-sheet {
-  position:absolute; left:30%; right:30%; bottom:0;
-  height:40%;
-  background:rgba(22,15,7,.92);
-  border:1px solid rgba(200,155,75,.22);
-  border-bottom:none;
-  border-radius:10px 10px 0 0;
-  display:flex; flex-direction:column; align-items:center;
-  padding:7px 10px 9px;
-  gap:7px;
-  box-shadow:0 -8px 24px rgba(0,0,0,.4);
+  position: absolute; left: 30%; right: 30%; bottom: 0; height: 45%;
+  background: var(--paper-card); border: 1px solid var(--line); border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 8px 12px; gap: 8px; z-index: 2;
+  box-shadow: 0 -5px 15px rgba(42,33,24,0.05);
 }
-.mock-sheet-grip {
-  width:18px; height:3px; border-radius:2px;
-  background:rgba(220,175,100,.4);
-  flex-shrink:0;
-}
-.mock-sheet-row {
-  width:100%; display:flex; justify-content:space-between; align-items:center;
-}
-.mock-sheet-price { width:34%; height:6px; border-radius:2px; background:rgba(240,200,112,.5); }
-.mock-sheet-chev  { width:8px; height:8px; border:1px solid rgba(200,155,75,.4); border-radius:2px; }
-.mock-sheet-bars { width:100%; display:flex; flex-direction:column; gap:4px; margin-top:2px; }
-.mock-sheet-bars .mock-bar { background:rgba(200,155,75,.14); }
-.mock-sheet-bars .mock-bar.accent { background:rgba(200,155,75,.4); width:55%; }
+.mock-sheet-grip { width: 24px; height: 3px; border-radius: 2px; background: rgba(42,33,24,0.15); flex-shrink: 0; }
+.mock-sheet-row { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+.mock-sheet-price { width: 40%; height: 6px; background: var(--ink); }
+.mock-sheet-chev  { width: 8px; height: 8px; border-right: 1.5px solid var(--ink-soft); border-bottom: 1.5px solid var(--ink-soft); transform: rotate(45deg); }
+.mock-sheet-bars { width: 100%; display: flex; flex-direction: column; gap: 5px; margin-top: 4px; }
 
-.card-body { padding:16px 18px 18px; }
-.card-tag { font-size:.58rem; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:6px; font-weight:700; }
-.card-title { font-size:.95rem; font-weight:700; color:var(--text); margin-bottom:7px; line-height:1.25; }
-.card-desc { font-size:.76rem; color:var(--dim); line-height:1.6; margin-bottom:14px; }
-.card-meta { display:flex; gap:8px; flex-wrap:wrap; }
+/* ═══════════════════════════════════════════════════════
+   TEXTOS DE LA TARJETA
+═══════════════════════════════════════════════════════ */
+.card-body { padding: 20px 24px 24px; display: flex; flex-direction: column; flex: 1; }
+.card-tag { 
+  font-family: var(--font-mono); font-size: .62rem; letter-spacing: 1.5px; 
+  text-transform: uppercase; color: var(--rust); margin-bottom: 8px; font-weight: 600; 
+}
+.card-title { 
+  font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; 
+  color: var(--ink); margin-bottom: 10px; line-height: 1.2; letter-spacing: -0.2px;
+}
+.card-desc { 
+  font-family: var(--font-body); font-size: .88rem; color: var(--ink-soft); 
+  line-height: 1.6; margin-bottom: 20px; 
+}
+.card-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
 .meta-pill {
-  font-size:.60rem; letter-spacing:.5px; color:var(--muted);
-  border:1px solid var(--border); border-radius:20px; padding:3px 9px;
-  font-family:'Courier New',monospace;
+  font-family: var(--font-mono); font-size: .60rem; letter-spacing: .5px; color: var(--ink-soft);
+  border: 1px solid var(--line); border-radius: 2px; padding: 4px 8px; background: var(--kraft);
 }
 .card-cta {
-  display:flex; align-items:center; justify-content:space-between;
-  margin-top:14px; padding-top:12px; border-top:1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line);
 }
-.cta-link { font-size:.72rem; font-weight:700; color:var(--glow); letter-spacing:.3px; }
-.cta-arrow { font-size:.9rem; color:var(--accent); transition:transform .15s; }
-.demo-card:hover .cta-arrow { transform:translateX(4px); }
+.cta-link { font-family: var(--font-mono); font-size: .75rem; font-weight: 600; color: var(--ink); letter-spacing: .3px; }
+.cta-arrow { font-family: var(--font-mono); font-size: .9rem; color: var(--rust); transition: transform .15s; }
+.demo-card:hover .cta-arrow { transform: translateX(4px); }
 
+/* ═══════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════ */
 footer {
-  position:relative; z-index:1;
-  border-top:1px solid var(--border); padding:24px 48px;
-  display:flex; justify-content:space-between; align-items:center;
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--line); padding: 24px 48px;
+  display: flex; justify-content: space-between; align-items: center;
 }
-.footer-copy { font-size:.62rem; color:var(--muted); letter-spacing:.5px; }
-.footer-stack { display:flex; gap:12px; align-items:center; }
-.stack-pill { font-size:.60rem; font-family:'Courier New',monospace; color:var(--muted); }
+.footer-copy { font-family: var(--font-mono); font-size: .66rem; color: var(--ink-soft); letter-spacing: .5px; }
+.footer-stack { display: flex; gap: 12px; align-items: center; }
+.stack-pill { font-family: var(--font-mono); font-size: .62rem; color: var(--ink-faint); }
 
-@media(max-width:600px){
-  nav,footer{padding:16px 20px;}
-  .hero{padding:48px 20px 40px;}
-  .demos-section{padding:0 16px 48px;}
-  footer{flex-direction:column;gap:10px;text-align:center;}
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVO
+═══════════════════════════════════════════════════════ */
+@media(max-width: 680px) {
+  nav, footer { padding: 20px 24px; }
+  .hero { padding: 48px 20px 40px; }
+  .demos-section { padding: 0 20px 48px; }
+  footer { flex-direction: column; gap: 12px; text-align: center; }
 }
-@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important;}}
+@media(prefers-reduced-motion: reduce) { 
+  * { transition-duration: .01ms !important; animation-duration: .01ms !important; } 
+}
 </style>
 </head>
 <body>
@@ -243,20 +286,21 @@ footer {
   </div>
   <div style="display:flex;gap:12px;align-items:center;">
     <span class="nav-version">v1.0.0</span>
-    <span class="stack-pill">Three.js · ES Modules</span>
+    <span class="stack-pill" style="display:none;">Three.js · ES Modules</span>
   </div>
 </nav>
 
 <div class="hero">
-  <div class="hero-eyebrow">Librería de componentes 3D</div>
-  <h1>VitrinaViewer<span>.js</span></h1>
-  <p class="hero-desc">Motor de renderizado 3D encapsulado para configuradores de muebles. Integrable en cualquier web con una sola clase.</p>
+  <div class="hero-eyebrow">Motor de Renderizado Técnico</div>
+  <h1>SilexEngine<span>.js</span></h1>
+  <p class="hero-desc">Librería 3D encapsulada para configuradores de muebles. Integrable en cualquier entorno web simulando un plano de taller interactivo.</p>
 </div>
 
 <div class="demos-section">
-  <div class="section-header">Demos disponibles</div>
+  <div class="section-header">Vistas de Taller Disponibles</div>
   <div class="demos-grid">
 
+    <!-- Demo 1: Full -->
     <a class="demo-card" href="./full.html">
       <div class="card-thumb thumb-full">
         <div class="mock-panel">
@@ -265,66 +309,73 @@ footer {
           <div class="mock-bar short"></div>
           <div class="mock-bar"></div>
           <div class="mock-bar short"></div>
-          <div class="mock-bar accent" style="width:80%;margin-top:4px;"></div>
+          <div class="mock-bar accent" style="width:80%;margin-top:4px;height:3px;"></div>
           <div class="mock-bar"></div>
-          <div class="mock-bar short"></div>
         </div>
-        <div class="mock-3d"><div class="mock-box"></div></div>
+        <div class="mock-3d">
+          <div class="blueprint-grid"></div>
+          <div class="mock-box"></div>
+        </div>
       </div>
       <div class="card-body">
-        <div class="card-tag">Demo 01</div>
+        <div class="card-tag">Ficha 01</div>
         <div class="card-title">Configurador Completo</div>
-        <div class="card-desc">Panel lateral con todos los controles. Dimensiones, acabados, vidrio, puertas e iluminación LED. Vista de pantalla completa.</div>
+        <div class="card-desc">Panel lateral técnico con todas las acotaciones. Control de dimensiones, maderas, vidrios y herrajes.</div>
         <div class="card-meta">
           <span class="meta-pill">pantalla-completa</span>
-          <span class="meta-pill">showStats: true</span>
-          <span class="meta-pill">all-controls</span>
+          <span class="meta-pill">cotas-activas</span>
         </div>
         <div class="card-cta">
-          <span class="cta-link">Ver demo</span>
+          <span class="cta-link">Abrir plano</span>
           <span class="cta-arrow">→</span>
         </div>
       </div>
     </a>
 
+    <!-- Demo 2: Widget -->
     <a class="demo-card" href="./widget.html">
       <div class="card-thumb thumb-embed">
         <div class="mock-embed-info">
           <div class="mock-embed-tag"></div>
           <div class="mock-embed-title"></div>
           <div class="mock-embed-desc">
-            <div class="mock-txt-line wide"></div>
-            <div class="mock-txt-line med"></div>
+            <div class="mock-txt-line" style="width:100%"></div>
+            <div class="mock-txt-line" style="width:70%"></div>
           </div>
           <div class="mock-embed-finishes">
-            <div class="mock-embed-finish nogal"></div>
-            <div class="mock-embed-finish blanco"></div>
-            <div class="mock-embed-finish negro"></div>
-            <div class="mock-embed-finish encino"></div>
+            <div class="mock-embed-finish n"></div>
+            <div class="mock-embed-finish b"></div>
+            <div class="mock-embed-finish e"></div>
           </div>
           <div class="mock-embed-price"></div>
         </div>
-        <div class="mock-viewer-col"><div class="mock-box"></div></div>
+        <div class="mock-viewer-col">
+          <div class="blueprint-grid"></div>
+          <div class="mock-box"></div>
+        </div>
       </div>
       <div class="card-body">
-        <div class="card-tag">Demo 02</div>
+        <div class="card-tag">Ficha 02</div>
         <div class="card-title">Widget Embebido</div>
-        <div class="card-desc">El visor 3D integrado dentro de una página de producto. Controles mínimos, formato franja. Ideal para tiendas en línea.</div>
+        <div class="card-desc">Visor 3D inyectado en una página de producto estática. Formato de tarjeta, ideal para el catálogo general.</div>
         <div class="card-meta">
-          <span class="meta-pill">embedded</span>
-          <span class="meta-pill">minimal-ui</span>
-          <span class="meta-pill">showStats: false</span>
+          <span class="meta-pill">tarjeta-producto</span>
+          <span class="meta-pill">ui-mínima</span>
         </div>
         <div class="card-cta">
-          <span class="cta-link">Ver demo</span>
+          <span class="cta-link">Abrir plano</span>
           <span class="cta-arrow">→</span>
         </div>
       </div>
     </a>
 
+    <!-- Demo 3: Mobile -->
     <a class="demo-card" href="./mobile.html">
       <div class="card-thumb thumb-mobile">
-        <div class="mock-phone-3d"><div class="mock-box"></div></div>
+        <div class="mock-phone-3d">
+          <div class="blueprint-grid"></div>
+          <div class="mock-box"></div>
+        </div>
         <div class="mock-sheet">
           <div class="mock-sheet-grip"></div>
           <div class="mock-sheet-row">
@@ -339,16 +390,15 @@ footer {
         </div>
       </div>
       <div class="card-body">
-        <div class="card-tag">Demo 03</div>
-        <div class="card-title">Vista Móvil — Bottom Sheet</div>
-        <div class="card-desc">Visor 3D a pantalla completa con panel de controles deslizable desde abajo. Todos los controles del configurador, optimizado para touch.</div>
+        <div class="card-tag">Ficha 03</div>
+        <div class="card-title">Vista Móvil (Bottom Sheet)</div>
+        <div class="card-desc">Visor inmersivo a pantalla completa con ficha técnica deslizable desde la parte inferior. Optimizado para pantallas táctiles.</div>
         <div class="card-meta">
-          <span class="meta-pill">mobile-first</span>
+          <span class="meta-pill">touch-first</span>
           <span class="meta-pill">bottom-sheet</span>
-          <span class="meta-pill">all-controls</span>
         </div>
         <div class="card-cta">
-          <span class="cta-link">Ver demo</span>
+          <span class="cta-link">Abrir plano</span>
           <span class="cta-arrow">→</span>
         </div>
       </div>
@@ -358,13 +408,11 @@ footer {
 </div>
 
 <footer>
-  <span class="footer-copy">© 2025 Vitrinas Sílice · QuoteFlow</span>
+  <span class="footer-copy">© 2026 Vitrinas Sílice · Taller de Diseño</span>
   <div class="footer-stack">
     <span class="stack-pill">Three.js r160</span>
     <span class="stack-pill">·</span>
     <span class="stack-pill">Vanilla ES6</span>
-    <span class="stack-pill">·</span>
-    <span class="stack-pill">No bundler</span>
   </div>
 </footer>
 

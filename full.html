@@ -5,688 +5,209 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Configurador 3D · Aparador · Vitrinas Sílice</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap" rel="stylesheet">
+
 <style>
-/* ═══════════════════════════════════════════════════════
-   TOKENS
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════
+   FICHA DE TALLER — Sistema de diseño
+═══════════════════════════════════════════════════════════════ */
 :root {
-  --bg-deep:        #120e07;
-  --bg-panel:       rgba(22, 15, 7, 0.90);
-  --bg-card:        rgba(255, 238, 200, 0.03);
-  --bg-card-hover:  rgba(255, 238, 200, 0.055);
-  --border-warm:    rgba(200, 155, 80, 0.14);
-  --border-active:  rgba(220, 175, 100, 0.45);
-  --accent:         #b8813a;
-  --accent-glow:    #dca85a;
-  --accent-bright:  #f0c870;
-  --accent-soft:    rgba(184, 129, 58, 0.13);
-  --text-main:      #ede0c8;
-  --text-dim:       #8a7a62;
-  --text-muted:     #4e4232;
-  --text-micro:     #3a3028;
-  --sep:            rgba(200, 155, 80, 0.10);
-  --radius-card:    10px;
-  --radius-btn:     7px;
-  --panel-w:        292px;
+  --kraft:         #f3ead9;   
+  --kraft-deep:    #e9dcc3;   
+  --ink:           #2a2118;   
+  --ink-soft:      #6b5d48;   
+  --ink-faint:     #a89a82;   
+  --wood-mid:      #8a6a3f;   
+  --wood-deep:     #4a3826;   
+  --rust:          #c4471f;   
+  --rust-soft:     rgba(196, 71, 31, 0.10);
+  --line:          rgba(42, 33, 24, 0.14);   
+  --paper-card:    #fbf6ec;   
+  
+  --radius:        3px;
+  --panel-w:       380px;
+
+  --font-display:  'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body:     'Source Serif 4', Georgia, serif;
+  --font-mono:     'IBM Plex Mono', 'Courier New', monospace;
 }
 
-/* ═══════════════════════════════════════════════════════
-   RESET + BASE
-═══════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   width: 100%; height: 100%;
-  background: var(--bg-deep);
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  color: var(--text-main);
+  background: var(--kraft);
+  font-family: var(--font-body);
+  color: var(--ink);
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(138,106,63,0.05), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(138,106,63,0.04), transparent 50%);
 }
 
 /* ═══════════════════════════════════════════════════════
    LAYOUT
 ═══════════════════════════════════════════════════════ */
-#app {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-}
+#app { display: flex; width: 100vw; height: 100vh; }
 
 /* ═══════════════════════════════════════════════════════
-   PANEL LATERAL
+   PANEL LATERAL TÉCNICO
 ═══════════════════════════════════════════════════════ */
 #controls-panel {
-  width: var(--panel-w);
-  min-width: var(--panel-w);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-panel);
-  backdrop-filter: blur(28px) saturate(130%);
-  border-right: 1px solid var(--border-warm);
-  box-shadow: 6px 0 48px rgba(0,0,0,0.55);
-  overflow: hidden;
-  position: relative;
-  z-index: 10;
+  width: var(--panel-w); min-width: var(--panel-w); height: 100%;
+  display: flex; flex-direction: column; background: var(--paper-card);
+  border-right: 1px solid var(--line);
+  box-shadow: 10px 0 30px rgba(42,33,24,0.05);
+  position: relative; z-index: 10;
 }
 
-/* Área scrollable interna */
 #scroll-area {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 0 16px 16px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(200,155,80,0.18) transparent;
-}
-#scroll-area::-webkit-scrollbar { width: 3px; }
-#scroll-area::-webkit-scrollbar-thumb {
-  background: rgba(200,155,80,0.22);
-  border-radius: 3px;
+  flex: 1; overflow-y: auto; overflow-x: hidden; padding: 0 24px 24px;
+  scrollbar-width: thin; scrollbar-color: var(--line) transparent;
 }
 
-/* ── Header ── */
-.panel-header {
-  padding: 18px 16px 14px;
-  border-bottom: 1px solid var(--sep);
-  flex-shrink: 0;
-}
+.panel-header { padding: 24px 24px 16px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+.brand-eyebrow { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rust); margin-bottom: 8px; }
+.panel-header h1 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px; color: var(--ink); line-height: 1.15; }
 
-.brand-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 7px;
-}
+.spec-block { border-bottom: 1px solid var(--line); padding: 20px 0; }
+.spec-block:last-of-type { border-bottom: none; }
+.spec-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 16px; }
+.spec-label::before { content: ''; width: 5px; height: 5px; background: var(--rust); border-radius: 50%; flex-shrink: 0; }
 
-.brand-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--accent-glow);
-  box-shadow: 0 0 7px var(--accent-glow);
-  animation: pulse-dot 3s ease-in-out infinite;
-}
+/* ── Cards Modelo ── */
+.model-cards { display: flex; flex-direction: column; gap: 10px; }
+.model-card { all: unset; display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: var(--radius); border: 1px solid var(--line); cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+.model-card:hover { border-color: var(--wood-mid); }
+.model-card.active { border-color: var(--rust); background: var(--rust-soft); }
+.model-card-header { display: flex; justify-content: space-between; align-items: baseline; }
+.model-card-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--ink); }
+.model-card.active .model-card-name { color: var(--rust); }
+.model-card-tag { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-faint); }
+.model-card.active .model-card-tag { color: var(--rust); }
+.model-card-desc { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.45; }
+.model-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.model-pill { font-family: var(--font-mono); font-size: 0.58rem; padding: 3px 6px; border-radius: 2px; border: 1px solid var(--line); color: var(--ink-soft); }
+.model-card.active .model-pill { border-color: rgba(196, 71, 31, 0.3); color: var(--rust); }
 
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; box-shadow: 0 0 7px var(--accent-glow); }
-  50%       { opacity: 0.5; box-shadow: 0 0 3px var(--accent-glow); }
-}
+/* ── Sliders ── */
+.dim-row + .dim-row { margin-top: 16px; }
+.dim-row-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
+.dim-name { font-size: 0.85rem; color: var(--ink); }
+.dim-value { font-family: var(--font-mono); font-weight: 600; font-size: 0.82rem; color: var(--wood-mid); font-variant-numeric: tabular-nums; }
+.dim-value.cm::after { content: ' cm'; font-weight: 400; color: var(--ink-faint); font-size: 0.74rem; }
+.dim-value.deg::after { content: '°'; font-weight: 400; color: var(--ink-faint); }
 
-.brand-name {
-  font-size: 0.60rem;
-  letter-spacing: 2.8px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-
-.panel-header h1 {
-  font-size: 1.0rem;
-  font-weight: 700;
-  color: var(--text-main);
-  letter-spacing: 0.2px;
-  line-height: 1.25;
-}
-
-.panel-header h1 em {
-  font-style: normal;
-  color: var(--accent-glow);
-}
-
-/* ── Secciones ── */
-.section {
-  padding-top: 16px;
-}
-
-.section-label {
-  font-size: 0.59rem;
-  font-weight: 700;
-  letter-spacing: 2.4px;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 9px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  opacity: 0.85;
-}
-.section-label::after {
-  content: '';
-  flex: 1; height: 1px;
-  background: var(--sep);
-}
-
-/* ── Card contenedor ── */
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-warm);
-  border-radius: var(--radius-card);
-  padding: 12px 13px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: border-color 0.2s;
-}
-
-/* ── Slider row ── */
-.slider-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  font-size: 0.76rem;
-  color: var(--text-dim);
-  margin-bottom: 7px;
-}
-
-.slider-val {
-  font-weight: 700;
-  color: var(--text-main);
-  font-size: 0.82rem;
-  font-variant-numeric: tabular-nums;
-}
-
-input[type="range"] {
-  width: 100%;
-  -webkit-appearance: none;
-  appearance: none;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--sep);
-  outline: none;
-  cursor: pointer;
-}
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 13px; height: 13px;
-  border-radius: 50%;
-  background: var(--accent-bright);
-  box-shadow: 0 0 8px rgba(240,200,112,0.45);
-  cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.1s;
-}
-input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.25);
-  box-shadow: 0 0 12px rgba(240,200,112,0.6);
-}
-input[type="range"]::-moz-range-thumb {
-  width: 13px; height: 13px;
-  border-radius: 50%;
-  background: var(--accent-bright);
-  border: none;
-  box-shadow: 0 0 8px rgba(240,200,112,0.45);
-}
+input[type="range"] { width: 100%; -webkit-appearance: none; appearance: none; height: 1px; background: var(--line); outline: none; cursor: pointer; margin: 9px 0; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 11px; height: 11px; border-radius: 50%; background: var(--paper-card); border: 2px solid var(--wood-mid); cursor: pointer; transition: border-color 0.15s, transform 0.12s; }
+input[type="range"]:hover::-webkit-slider-thumb { border-color: var(--rust); transform: scale(1.2); }
+input[type="range"]:focus-visible::-webkit-slider-thumb { border-color: var(--rust); transform: scale(1.2); }
 
 /* ── Swatches ── */
-.swatches {
-  display: grid;
-  gap: 7px;
-}
+.swatches { display: grid; gap: 8px; }
 .swatches-4 { grid-template-columns: repeat(4, 1fr); }
 .swatches-3 { grid-template-columns: repeat(3, 1fr); }
+.swatch-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; background: none; border: none; cursor: pointer; padding: 4px 2px; font-family: inherit; }
+.swatch-disk { width: 100%; aspect-ratio: 1.3; border-radius: 2px; border: 1px solid var(--line); outline: 2px solid transparent; outline-offset: 2px; transition: outline-color 0.15s, transform 0.15s; position: relative; overflow: hidden; }
+.swatch-disk::after { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(95deg, rgba(0,0,0,0.06) 0px, transparent 1.5px, transparent 5px, rgba(0,0,0,0.04) 6px); }
+.swatch-btn span { font-family: var(--font-mono); font-size: 0.62rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.4px; }
+.swatch-btn:hover .swatch-disk { transform: translateY(-1px); }
+.swatch-btn.active .swatch-disk { outline-color: var(--rust); }
+.swatch-btn.active span { color: var(--ink); }
 
-.swatch-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-.swatch-disk {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 8px;
-  border: 2px solid transparent;
-  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
-}
-.swatch-btn span {
-  font-size: 0.60rem;
-  color: var(--text-muted);
-  text-align: center;
-  line-height: 1.2;
-  transition: color 0.15s;
-}
-.swatch-btn:hover .swatch-disk { transform: scale(1.05); }
-.swatch-btn.active .swatch-disk {
-  border-color: var(--accent-bright);
-  box-shadow: 0 0 10px rgba(240,200,112,0.35);
-  transform: scale(1.08);
-}
-.swatch-btn.active span { color: var(--text-main); }
+.sw-nogal  { background: linear-gradient(100deg, #7a4e2d, #5c3618); }
+.sw-blanco { background: linear-gradient(100deg, #f2eee4, #ddd6c4); }
+.sw-negro  { background: linear-gradient(100deg, #2b2b2b, #161616); }
+.sw-encino { background: linear-gradient(100deg, #d2b685, #ab8447); }
+.sw-claro      { background: linear-gradient(100deg, #dce4e8, #c6d0d6); }
+.sw-esmerilado { background: linear-gradient(100deg, #e8e8e6, #d4d4d1); }
+.sw-tintado    { background: linear-gradient(100deg, #717874, #575c59); }
 
-/* colores madera */
-.sw-nogal  { background: linear-gradient(145deg,#7a4e2d,#502e10); }
-.sw-blanco { background: linear-gradient(145deg,#f0ece2,#d8d2c2); }
-.sw-negro  { background: linear-gradient(145deg,#252525,#0f0f0f); }
-.sw-encino { background: linear-gradient(145deg,#d0b47c,#a88040); }
-/* colores vidrio */
-.sw-claro      { background: linear-gradient(145deg,rgba(190,225,255,0.45),rgba(130,185,240,0.25)); border: 1px solid rgba(140,195,255,0.35) !important; }
-.sw-esmerilado { background: linear-gradient(145deg,rgba(215,215,205,0.45),rgba(170,170,160,0.35)); }
-.sw-tintado    { background: linear-gradient(145deg,rgba(90,130,90,0.5),rgba(50,90,50,0.4)); }
+/* ── Botones (Ficha) ── */
+.sub-label { font-family: var(--font-mono); font-size: 0.62rem; color: var(--ink-soft); margin-bottom: 6px; letter-spacing: 0.3px; text-transform: uppercase; }
+.choice-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.choice-row:last-child { margin-bottom: 0; }
+.choice-btn { flex: 1; text-align: center; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-soft); background: transparent; border: 1px solid var(--line); border-radius: var(--radius); padding: 9px 12px; cursor: pointer; transition: all 0.15s; }
+.choice-btn:hover { border-color: var(--wood-mid); color: var(--ink); }
+.choice-btn.active { border-color: var(--rust); color: var(--rust); background: var(--rust-soft); font-weight: 500; }
 
-/* ── Opt buttons (cantidad, tipo) ── */
-.opts-row {
-  display: flex;
-  gap: 5px;
-}
-.opt-btn {
-  flex: 1;
-  padding: 7px 5px;
-  border-radius: var(--radius-btn);
-  border: 1px solid var(--border-warm);
-  background: rgba(255,255,255,0.02);
-  color: var(--text-dim);
-  font-size: 0.72rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color 0.14s, background 0.14s, color 0.14s;
-  text-align: center;
-  line-height: 1.25;
-  font-family: inherit;
-}
-.opt-btn:hover { border-color: var(--accent); color: var(--text-main); }
-.opt-btn.active {
-  border-color: var(--accent-glow);
-  background: var(--accent-soft);
-  color: var(--text-main);
-  box-shadow: 0 0 12px rgba(220,168,90,0.08);
-}
+/* ── Toggle LED ── */
+.toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.toggle-row .dim-name { font-size: 0.85rem; }
+.switch { position: relative; width: 34px; height: 19px; flex-shrink: 0; }
+.switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+.switch-track { position: absolute; inset: 0; background: var(--line); border: 1px solid var(--ink-faint); border-radius: 10px; cursor: pointer; transition: background 0.18s, border-color 0.18s; }
+.switch-track::before { content: ''; position: absolute; width: 13px; height: 13px; left: 2px; top: 2px; background: var(--paper-card); border-radius: 50%; transition: transform 0.18s; }
+.switch input:checked + .switch-track { background: var(--rust); border-color: var(--rust); }
+.switch input:checked + .switch-track::before { transform: translateX(15px); background: #fff; }
 
-/* ── Sub-label dentro de card ── */
-.sub-label {
-  font-size: 0.67rem;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-  letter-spacing: 0.3px;
-}
-
-/* ── Toggle ── */
-.toggle-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.78rem;
-  color: var(--text-dim);
-}
-.toggle-switch {
-  position: relative;
-  width: 34px; height: 18px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.toggle-switch input { display: none; }
-.toggle-track {
-  position: absolute;
-  inset: 0;
-  border-radius: 9px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--border-warm);
-  transition: background 0.2s, border-color 0.2s;
-}
-.toggle-thumb {
-  position: absolute;
-  top: 3px; left: 3px;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  transition: transform 0.2s, background 0.2s;
-}
-.toggle-switch input:checked ~ .toggle-track {
-  background: var(--accent-soft);
-  border-color: var(--accent-glow);
-}
-.toggle-switch input:checked ~ .toggle-thumb {
-  transform: translateX(16px);
-  background: var(--accent-bright);
-  box-shadow: 0 0 7px rgba(240,200,112,0.5);
-}
-
-/* ── LED temperatura ── */
-.led-temp-row {
-  display: flex;
-  gap: 5px;
-  opacity: 0.28;
-  pointer-events: none;
-  transition: opacity 0.25s;
-}
-.led-temp-row.visible {
-  opacity: 1;
-  pointer-events: all;
-}
-.led-btn {
-  flex: 1;
-  padding: 7px 4px;
-  border-radius: var(--radius-btn);
-  border: 1px solid var(--border-warm);
-  background: none;
-  color: var(--text-dim);
-  font-size: 0.70rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.15s;
-  font-family: inherit;
-  line-height: 1.4;
-}
-.led-btn.calido  { border-color: rgba(255,185,60,0.22); }
-.led-btn.frio    { border-color: rgba(110,165,255,0.22); }
-.led-btn.active.calido {
-  background: rgba(255,175,40,0.10);
-  border-color: #fdb030;
-  color: #ffd070;
-  box-shadow: 0 0 10px rgba(255,175,40,0.18);
-}
-.led-btn.active.frio {
-  background: rgba(90,160,255,0.09);
-  border-color: #6aaeff;
-  color: #a8d0ff;
-  box-shadow: 0 0 10px rgba(90,160,255,0.18);
-}
+.led-temp-row { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.22s, opacity 0.18s; }
+.led-temp-row.visible { max-height: 50px; opacity: 1; margin-top: 4px; }
 
 /* ═══════════════════════════════════════════════════════
-   SELECTOR DE MODELO — Cards descriptivas
-   Tres cards apiladas verticalmente, cada una muestra
-   el nombre del modelo, un subtítulo de receta y tres
-   píldoras de características clave.
+   PRECIO Y TICKER
 ═══════════════════════════════════════════════════════ */
-.model-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
+.price-footer { flex-shrink: 0; padding: 20px 24px; border-top: 1px solid var(--line); background: var(--kraft); }
+.price-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 6px; }
+.price-label-small { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 1.2px; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 5px; }
+.price-amount { font-family: var(--font-mono); font-size: 1.9rem; font-weight: 600; color: var(--ink); letter-spacing: -0.5px; font-variant-numeric: tabular-nums; line-height: 1; }
+.price-currency { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-faint); margin-left: 4px; }
+.price-note { font-size: 0.7rem; color: var(--ink-faint); }
 
-.model-card {
-  all: unset; /* reset de <button> */
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 10px 12px;
-  border-radius: var(--radius-card);
-  border: 1px solid var(--border-warm);
-  background: var(--bg-card);
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
-  width: 100%;
-  text-align: left;
-  font-family: inherit;
-}
-.model-card:hover {
-  border-color: var(--accent);
-  background: var(--bg-card-hover);
-}
-.model-card.active {
-  border-color: var(--accent-glow);
-  background: var(--accent-soft);
-  box-shadow: 0 0 18px rgba(220,168,90,0.07), inset 0 0 0 1px rgba(220,168,90,0.12);
-}
-
-.model-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-
-.model-card-name {
-  font-size: 0.80rem;
-  font-weight: 700;
-  color: var(--text-main);
-  letter-spacing: 0.2px;
-}
-.model-card.active .model-card-name {
-  color: var(--accent-bright);
-}
-
-.model-card-tag {
-  font-size: 0.57rem;
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-.model-card.active .model-card-tag {
-  color: var(--accent);
-}
-
-.model-card-desc {
-  font-size: 0.67rem;
-  color: var(--text-dim);
-  line-height: 1.45;
-}
-
-/* Píldoras de características */
-.model-pills {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-}
-
-.model-pill {
-  font-size: 0.58rem;
-  padding: 2px 7px;
-  border-radius: 20px;
-  border: 1px solid var(--border-warm);
-  color: var(--text-muted);
-  background: rgba(255,255,255,0.02);
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-  transition: color 0.15s, border-color 0.15s;
-}
-.model-card.active .model-pill {
-  border-color: rgba(220,168,90,0.25);
-  color: var(--accent);
-}
-
-/* Indicador activo — punto lateral */
-.model-card-name::before {
-  content: '';
-  display: inline-block;
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: transparent;
-  margin-right: 6px;
-  vertical-align: middle;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-.model-card.active .model-card-name::before {
-  background: var(--accent-glow);
-  box-shadow: 0 0 6px var(--accent-glow);
-}
+.action-ticker { margin-top: 10px; height: 18px; overflow: hidden; position: relative; }
+.ticker-line { font-family: var(--font-mono); font-size: 0.65rem; color: var(--rust); letter-spacing: 0.5px; opacity: 0; transform: translateY(6px); transition: opacity 0.2s, transform 0.2s; }
+.ticker-line.visible { opacity: 1; transform: translateY(0); }
 
 /* ═══════════════════════════════════════════════════════
-   PRECIO — fijo al fondo del panel
-═══════════════════════════════════════════════════════ */
-.price-footer {
-  flex-shrink: 0;
-  padding: 13px 16px 14px;
-  border-top: 1px solid var(--sep);
-  background: rgba(12, 8, 3, 0.55);
-}
-
-.price-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 4px;
-}
-.price-label-small {
-  font-size: 0.58rem;
-  letter-spacing: 2.2px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  line-height: 1;
-  align-self: flex-start;
-  padding-top: 6px;
-}
-.price-amount {
-  font-size: 1.7rem;
-  font-weight: 800;
-  color: var(--accent-bright);
-  letter-spacing: -0.5px;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-  transition: color 0.25s;
-}
-.price-currency {
-  font-size: 0.75rem;
-  color: var(--text-dim);
-  margin-left: 3px;
-  font-weight: 400;
-}
-.price-note {
-  font-size: 0.59rem;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-/* ── Ticker de última acción ── */
-.action-ticker {
-  margin-top: 8px;
-  height: 18px;
-  overflow: hidden;
-  position: relative;
-}
-.ticker-line {
-  font-size: 0.60rem;
-  color: var(--accent);
-  font-family: 'Courier New', monospace;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.2s, transform 0.2s;
-}
-.ticker-line.visible {
-  opacity: 0.75;
-  transform: translateY(0);
-}
-
-/* ═══════════════════════════════════════════════════════
-   VISOR 3D
+   VISOR 3D Y COTAS TÉCNICAS
 ═══════════════════════════════════════════════════════ */
 #canvas-container {
-  flex-grow: 1;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
+  flex-grow: 1; height: 100%; position: relative; overflow: hidden;
+  background: 
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.04), transparent 60%),
+    linear-gradient(165deg, var(--wood-deep), #2c2014);
 }
+.viewer-frame-corner { position: absolute; width: 22px; height: 22px; border: 1.5px solid rgba(243,234,217,0.32); pointer-events: none; z-index: 3; }
+.viewer-frame-corner.tl { top: 14px; left: 14px; border-right: none; border-bottom: none; }
+.viewer-frame-corner.tr { top: 14px; right: 14px; border-left: none; border-bottom: none; }
+.viewer-frame-corner.bl { bottom: 14px; left: 14px; border-right: none; border-top: none; }
+.viewer-frame-corner.br { bottom: 14px; right: 14px; border-left: none; border-top: none; }
 
-/* Esquina marca-agua */
-.canvas-watermark {
-  position: absolute;
-  bottom: 18px;
-  right: 20px;
-  font-size: 0.60rem;
-  letter-spacing: 2.8px;
-  color: rgba(200,155,70,0.18);
-  pointer-events: none;
-  text-transform: uppercase;
-  transition: opacity 0.3s;
-}
+.canvas-watermark { position: absolute; bottom: 18px; right: 20px; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 1.5px; color: rgba(243,234,217,0.32); pointer-events: none; text-transform: uppercase; z-index: 3;}
+.canvas-hint { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-size: 0.62rem; color: rgba(243,234,217,0.4); pointer-events: none; letter-spacing: 1.2px; white-space: nowrap; z-index: 3;}
+.lib-badge { position: absolute; top: 16px; right: 18px; font-family: var(--font-mono); font-size: 0.66rem; color: rgba(243,234,217,0.5); letter-spacing: 0.5px; z-index: 3; pointer-events: none; text-align: right; }
+.lib-badge b { color: rgba(243,234,217,0.85); font-weight: 500; }
+.model-badge { position: absolute; top: 16px; left: 18px; font-family: var(--font-mono); z-index: 3; pointer-events: none; }
+.model-badge-eyebrow { font-size: 0.58rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(243,234,217,0.5); margin-bottom: 2px; }
+.model-badge-name { font-size: 0.85rem; font-weight: 600; color: rgba(243,234,217,0.9); }
+.model-badge-recipe { font-size: 0.6rem; color: rgba(243,234,217,0.5); margin-top: 2px; }
 
-/* Badge modelo activo — top-left del visor */
-.model-badge {
-  position: absolute;
-  top: 14px;
-  left: 18px;
-  background: rgba(12,8,3,0.72);
-  border: 1px solid var(--border-warm);
-  border-radius: 7px;
-  padding: 6px 11px;
-  pointer-events: none;
-  backdrop-filter: blur(14px);
-  transition: opacity 0.25s;
-}
-.model-badge-eyebrow {
-  font-size: 0.54rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 2px;
-}
-.model-badge-name {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--accent-glow);
-  font-family: 'Courier New', monospace;
-  letter-spacing: 0.5px;
-}
-.model-badge-recipe {
-  font-size: 0.58rem;
-  color: var(--text-muted);
-  margin-top: 2px;
-  letter-spacing: 0.2px;
-}
+/* Telemetría SilexEngine */
+#canvas-container div[style*="monospace"] { font-family: var(--font-mono) !important; background: rgba(20,15,9,0.78) !important; border: 1px solid rgba(243,234,217,0.18) !important; border-radius: 3px !important; font-size: 10px !important; line-height: 1.6; }
 
-/* Hint de interacción */
-.canvas-hint {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.62rem;
-  color: rgba(200,155,70,0.22);
-  pointer-events: none;
-  letter-spacing: 1.2px;
-  white-space: nowrap;
-}
+/* Overlay de Cotas */
+.dim-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.dim-line { position: absolute; background: rgba(243,234,217,0.4); }
+.dim-line.h { height: 1px; }
+.dim-line.v { width: 1px; }
+.dim-tick { position: absolute; background: rgba(243,234,217,0.4); width: 1px; height: 7px; }
+.dim-tick.h-tick { width: 7px; height: 1px; }
+.dim-label { position: absolute; font-family: var(--font-mono); font-size: 0.66rem; color: rgba(243,234,217,0.78); background: var(--wood-deep); padding: 1px 5px; white-space: nowrap; letter-spacing: 0.3px; }
 
-/* Badge de librería — top-right del visor */
-.lib-badge {
-  position: absolute;
-  top: 14px;
-  right: 18px;
-  background: rgba(12,8,3,0.70);
-  border: 1px solid var(--border-warm);
-  border-radius: 6px;
-  padding: 6px 10px;
-  pointer-events: none;
-  backdrop-filter: blur(12px);
-}
-.lib-badge-label {
-  font-size: 0.56rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 2px;
-}
-.lib-badge-name {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--accent-glow);
-  font-family: 'Courier New', monospace;
-  letter-spacing: 0.5px;
-}
-
-/* ═══════════════════════════════════════════════════════
-   RESPONSIVO MÍNIMO
-═══════════════════════════════════════════════════════ */
-@media (max-width: 680px) {
-  :root { --panel-w: 100%; }
+@media (max-width: 880px) {
   #app { flex-direction: column; }
-  #controls-panel {
-    width: 100%;
-    height: 50vh;
-    border-right: none;
-    border-bottom: 1px solid var(--border-warm);
-  }
-  #canvas-container { height: 50vh; }
+  #controls-panel { width: 100%; height: 55vh; border-right: none; border-bottom: 1px solid var(--line); }
+  #canvas-container { height: 45vh; }
   .model-badge { display: none; }
-}
-
-/* Motion reduced */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-  }
 }
 </style>
 
-<!-- Import map: ajustar rutas a tu vendor folder -->
 <script type="importmap">
 {
   "imports": {
@@ -700,358 +221,306 @@ input[type="range"]::-moz-range-thumb {
 <body>
 <div id="app">
 
-  <!-- ══════════════════════════════════════
-       PANEL DE CONFIGURACIÓN
-  ══════════════════════════════════════ -->
   <aside id="controls-panel" aria-label="Panel de configuración">
-
     <div class="panel-header">
-      <div class="brand-eyebrow">
-        <div class="brand-dot"></div>
-        <span class="brand-name">Vitrinas Sílice · QuoteFlow</span>
-      </div>
-      <h1>Configurador<br><em>Aparador</em></h1>
+      <div class="brand-eyebrow">Vitrinas Sílice · QuoteFlow</div>
+      <h1>Configurador<br>Aparador</h1>
     </div>
 
     <div id="scroll-area">
-
-      <!-- ── MODELO ── -->
-      <div class="section">
-        <div class="section-label">Modelo</div>
-
+      <!-- MODELO -->
+      <div class="spec-block">
+        <div class="spec-label">Modelo</div>
         <div class="model-cards">
-
           <button class="model-card active" data-modelo="modeloA" aria-pressed="true">
             <div class="model-card-header">
               <span class="model-card-name">Modelo A</span>
               <span class="model-card-tag">Clásico</span>
             </div>
             <p class="model-card-desc">Base sólida con zócalo, cuerpo de madera y frente de vidrio.</p>
-            <div class="model-pills">
-              <span class="model-pill">Base estándar</span>
-              <span class="model-pill">Costados madera</span>
-              <span class="model-pill">Corona decorativa</span>
-            </div>
+            <div class="model-pills"><span class="model-pill">Base estándar</span><span class="model-pill">Costados madera</span><span class="model-pill">Corona decorativa</span></div>
           </button>
-
           <button class="model-card" data-modelo="modeloB" aria-pressed="false">
             <div class="model-card-header">
               <span class="model-card-name">Modelo B</span>
               <span class="model-card-tag">Expositor</span>
             </div>
             <p class="model-card-desc">Cuerpo completamente acristalado para máxima visibilidad. Base con cajón.</p>
-            <div class="model-pills">
-              <span class="model-pill">Base con cajón</span>
-              <span class="model-pill">Vidrio completo</span>
-              <span class="model-pill">Sin corona</span>
-            </div>
+            <div class="model-pills"><span class="model-pill">Base con cajón</span><span class="model-pill">Vidrio completo</span><span class="model-pill">Sin corona</span></div>
           </button>
-
           <button class="model-card" data-modelo="modeloC" aria-pressed="false">
             <div class="model-card-header">
               <span class="model-card-name">Modelo C</span>
               <span class="model-card-tag">Minimalista</span>
             </div>
             <p class="model-card-desc">Perfil contenido con tapa plana. Costados de madera y base limpia.</p>
-            <div class="model-pills">
-              <span class="model-pill">Base estándar</span>
-              <span class="model-pill">Costados madera</span>
-              <span class="model-pill">Tapa plana</span>
-            </div>
+            <div class="model-pills"><span class="model-pill">Base estándar</span><span class="model-pill">Costados madera</span><span class="model-pill">Tapa plana</span></div>
           </button>
-
         </div>
       </div>
 
-      <!-- ── DIMENSIONES ── -->
-      <div class="section">
-        <div class="section-label">Dimensiones</div>
-        <div class="card">
-
-          <div class="slider-row">
-            <div class="slider-label">
-              Ancho
-              <span class="slider-val"><span id="ancho-val">100</span> cm</span>
-            </div>
-            <input type="range" id="ancho-slider" min="50" max="200" value="100" step="5"
-                   aria-label="Ancho en centímetros">
-          </div>
-
-          <div class="slider-row">
-            <div class="slider-label">
-              Alto
-              <span class="slider-val"><span id="alto-val">120</span> cm</span>
-            </div>
-            <input type="range" id="alto-slider" min="80" max="220" value="120" step="5"
-                   aria-label="Alto en centímetros">
-          </div>
-
-          <div class="slider-row">
-            <div class="slider-label">
-              Profundidad
-              <span class="slider-val"><span id="profundidad-val">50</span> cm</span>
-            </div>
-            <input type="range" id="profundidad-slider" min="35" max="90" value="50" step="5"
-                   aria-label="Profundidad en centímetros">
-          </div>
-
+      <!-- DIMENSIONES -->
+      <div class="spec-block">
+        <div class="spec-label">Dimensiones</div>
+        <div class="dim-row">
+          <div class="dim-row-head"><span class="dim-name">Ancho</span><span class="dim-value cm" id="ancho-val">100</span></div>
+          <input type="range" id="ancho-slider" min="50" max="200" value="100" step="5">
+        </div>
+        <div class="dim-row">
+          <div class="dim-row-head"><span class="dim-name">Alto</span><span class="dim-value cm" id="alto-val">120</span></div>
+          <input type="range" id="alto-slider" min="80" max="220" value="120" step="5">
+        </div>
+        <div class="dim-row">
+          <div class="dim-row-head"><span class="dim-name">Profundidad</span><span class="dim-value cm" id="profundidad-val">50</span></div>
+          <input type="range" id="profundidad-slider" min="35" max="90" value="50" step="5">
         </div>
       </div>
 
-      <!-- ── MADERA ── -->
-      <div class="section">
-        <div class="section-label">Madera</div>
-        <div class="card">
-          <div class="swatches swatches-4">
-            <button class="swatch-btn active" data-acabado="nogal" aria-pressed="true">
-              <div class="swatch-disk sw-nogal"></div>
-              <span>Nogal</span>
-            </button>
-            <button class="swatch-btn" data-acabado="blanco" aria-pressed="false">
-              <div class="swatch-disk sw-blanco"></div>
-              <span>Blanco</span>
-            </button>
-            <button class="swatch-btn" data-acabado="negro" aria-pressed="false">
-              <div class="swatch-disk sw-negro"></div>
-              <span>Negro</span>
-            </button>
-            <button class="swatch-btn" data-acabado="encino" aria-pressed="false">
-              <div class="swatch-disk sw-encino"></div>
-              <span>Encino</span>
-            </button>
-          </div>
+      <!-- MADERA -->
+      <div class="spec-block">
+        <div class="spec-label">Madera</div>
+        <div class="swatches swatches-4">
+          <button class="swatch-btn active" data-acabado="nogal"><div class="swatch-disk sw-nogal"></div><span>Nogal</span></button>
+          <button class="swatch-btn" data-acabado="blanco"><div class="swatch-disk sw-blanco"></div><span>Blanco</span></button>
+          <button class="swatch-btn" data-acabado="negro"><div class="swatch-disk sw-negro"></div><span>Negro</span></button>
+          <button class="swatch-btn" data-acabado="encino"><div class="swatch-disk sw-encino"></div><span>Encino</span></button>
         </div>
       </div>
 
-      <!-- ── VIDRIO ── -->
-      <div class="section">
-        <div class="section-label">Vidrio</div>
-        <div class="card">
-          <div class="swatches swatches-3">
-            <button class="swatch-btn active" data-vidrio="claro" aria-pressed="true">
-              <div class="swatch-disk sw-claro"></div>
-              <span>Claro</span>
-            </button>
-            <button class="swatch-btn" data-vidrio="esmerilado" aria-pressed="false">
-              <div class="swatch-disk sw-esmerilado"></div>
-              <span>Esmerilado</span>
-            </button>
-            <button class="swatch-btn" data-vidrio="tintado" aria-pressed="false">
-              <div class="swatch-disk sw-tintado"></div>
-              <span>Tintado</span>
-            </button>
-          </div>
+      <!-- VIDRIO -->
+      <div class="spec-block">
+        <div class="spec-label">Vidrio</div>
+        <div class="swatches swatches-3">
+          <button class="swatch-btn active" data-vidrio="claro"><div class="swatch-disk sw-claro"></div><span>Claro</span></button>
+          <button class="swatch-btn" data-vidrio="esmerilado"><div class="swatch-disk sw-esmerilado"></div><span>Esmerilado</span></button>
+          <button class="swatch-btn" data-vidrio="tintado"><div class="swatch-disk sw-tintado"></div><span>Tintado</span></button>
         </div>
       </div>
 
-      <!-- ── PUERTAS ── -->
-      <div class="section">
-        <div class="section-label">Puertas</div>
-        <div class="card">
-
-          <div>
-            <div class="sub-label">Cantidad</div>
-            <div class="opts-row">
-              <button class="opt-btn active" data-npuertas="2" aria-pressed="true">2 puertas</button>
-              <button class="opt-btn"        data-npuertas="4" aria-pressed="false">4 puertas</button>
-            </div>
-          </div>
-
-          <div>
-            <div class="sub-label">Tipo de apertura</div>
-            <div class="opts-row">
-              <button class="opt-btn active" data-tipo="abatible"  aria-pressed="true">⬡ Abatibles</button>
-              <button class="opt-btn"        data-tipo="corrediza" aria-pressed="false">⇄ Corredizas</button>
-            </div>
-          </div>
-
-          <div class="slider-row">
-            <div class="slider-label">
-              Apertura
-              <span class="slider-val"><span id="apertura-val">0</span>°</span>
-            </div>
-            <input type="range" id="apertura-slider" min="0" max="120" value="0" step="5"
-                   aria-label="Grado de apertura de puertas">
-          </div>
-
+      <!-- PUERTAS -->
+      <div class="spec-block">
+        <div class="spec-label">Puertas</div>
+        <div class="sub-label">Cantidad</div>
+        <div class="choice-row">
+          <button class="choice-btn active" data-npuertas="2">2 puertas</button>
+          <button class="choice-btn" data-npuertas="4">4 puertas</button>
+        </div>
+        <div class="sub-label">Apertura</div>
+        <div class="choice-row">
+          <button class="choice-btn active" data-tipo="abatible">Abatibles</button>
+          <button class="choice-btn" data-tipo="corrediza">Corredizas</button>
+        </div>
+        <div class="dim-row" style="margin-top: 16px;">
+          <div class="dim-row-head"><span class="dim-name">Ángulo apertura</span><span class="dim-value deg" id="apertura-val">0</span></div>
+          <input type="range" id="apertura-slider" min="0" max="120" value="0" step="5">
         </div>
       </div>
 
-      <!-- ── INTERIOR ── -->
-      <div class="section">
-        <div class="section-label">Interior</div>
-        <div class="card">
-          <div class="slider-row">
-            <div class="slider-label">
-              Entrepaños de cristal
-              <span class="slider-val"><span id="entrepanos-val">1</span></span>
-            </div>
-            <input type="range" id="entrepanos-slider" min="0" max="5" value="1" step="1"
-                   aria-label="Número de entrepaños de cristal">
-          </div>
+      <!-- INTERIOR -->
+      <div class="spec-block">
+        <div class="spec-label">Interior</div>
+        <div class="dim-row">
+          <div class="dim-row-head"><span class="dim-name">Entrepaños de cristal</span><span class="dim-value" id="entrepanos-val">1</span></div>
+          <input type="range" id="entrepanos-slider" min="0" max="5" value="1" step="1">
         </div>
       </div>
 
-      <!-- ── ILUMINACIÓN ── -->
-      <div class="section">
-        <div class="section-label">Iluminación</div>
-        <div class="card">
-
-          <div class="toggle-row">
-            <span>Tiras LED interiores</span>
-            <label class="toggle-switch" aria-label="Activar LED">
-              <input type="checkbox" id="led-toggle">
-              <div class="toggle-track"></div>
-              <div class="toggle-thumb"></div>
-            </label>
-          </div>
-
-          <div class="led-temp-row" id="led-temp-row" aria-hidden="true">
-            <button class="led-btn calido active" data-temp="calido" aria-pressed="true">
-              ☀ Cálida<br><small>2700 K</small>
-            </button>
-            <button class="led-btn frio" data-temp="frio" aria-pressed="false">
-              ❄ Fría<br><small>5000 K</small>
-            </button>
-          </div>
-
+      <!-- ILUMINACIÓN -->
+      <div class="spec-block">
+        <div class="spec-label">Iluminación</div>
+        <div class="toggle-row">
+          <span class="dim-name">Tiras LED interiores</span>
+          <label class="switch">
+            <input type="checkbox" id="led-toggle">
+            <span class="switch-track"></span>
+          </label>
+        </div>
+        <div class="choice-row led-temp-row" id="led-temp-row">
+          <button class="choice-btn active" data-temp="calido">Cálido (2700K)</button>
+          <button class="choice-btn" data-temp="frio">Frío (5000K)</button>
         </div>
       </div>
+    </div>
 
-    </div><!-- /scroll-area -->
-
-    <!-- ── PRECIO — FIJO AL FONDO ── -->
+    <!-- PRECIO -->
     <div class="price-footer">
       <div class="price-row">
         <div class="price-label-small">Cotización<br>estimada</div>
         <div>
-          <span class="price-amount" id="precio-val">$4,500</span>
+          <span class="price-amount" id="precio-val">$0</span>
           <span class="price-currency">MXN</span>
         </div>
       </div>
       <div class="price-note">Precio referencial · sujeto a confirmación</div>
-      <div class="action-ticker">
-        <div class="ticker-line" id="ticker-line">—</div>
-      </div>
+      <div class="action-ticker"><div class="ticker-line" id="ticker-line">—</div></div>
     </div>
-
   </aside>
 
-  <!-- ══════════════════════════════════════
-       VISOR 3D
-  ══════════════════════════════════════ -->
+  <!-- VISOR 3D -->
   <div id="canvas-container" aria-label="Vista 3D del aparador">
+    <div class="dim-overlay" id="dim-overlay" aria-hidden="true"></div>
+    <div class="viewer-frame-corner tl"></div><div class="viewer-frame-corner tr"></div>
+    <div class="viewer-frame-corner bl"></div><div class="viewer-frame-corner br"></div>
 
-    <!-- Badge del modelo activo — top-left del visor -->
     <div class="model-badge" id="model-badge" aria-hidden="true">
       <div class="model-badge-eyebrow">Modelo activo</div>
       <div class="model-badge-name" id="badge-name">Modelo A</div>
       <div class="model-badge-recipe" id="badge-recipe">Base estándar · Costados madera · Corona</div>
     </div>
-
-    <div class="lib-badge" aria-hidden="true">
-      <div class="lib-badge-label">motor</div>
-      <div class="lib-badge-name">VitrinaViewer.js</div>
-    </div>
-
-    <div class="canvas-watermark" id="canvas-watermark">Aparador · Modelo A · Clásico</div>
+    <div class="lib-badge" aria-hidden="true"><b>SilexEngine</b> · aparador-silice</div>
+    <div class="canvas-watermark" id="canvas-watermark">REF · MOD-A · CLÁSICO</div>
     <div class="canvas-hint">Arrastra · Scroll para zoom</div>
   </div>
 
-</div><!-- /app -->
+</div>
 
-<script type="module" src="./js/main.js"></script>
+<!-- ══════════════════════════════════════════════════════════
+     LÓGICA DEL MOTOR (ES Modules)
+═══════════════════════════════════════════════════════════ -->
+<script type="module">
+import { SilexEngine }   from './js/core/SilexEngine.js';
+import { MaterialCache } from './js/core/MaterialCache.js';
+import { models }        from './js/models/Registry.js';
+import { Configurator }  from './js/ui/Configurator.js';
 
-<script>
-/* ══════════════════════════════════════════════════════════
-   TICKER + BADGE DINÁMICO
-   Puro DOM — no necesita el viewer. Actualiza el badge del
-   visor y el ticker de acciones en tiempo real.
-══════════════════════════════════════════════════════════ */
-(function () {
-  const ticker    = document.getElementById('ticker-line');
-  const badgeName = document.getElementById('badge-name');
-  const badgeRecipe = document.getElementById('badge-recipe');
-  const watermark = document.getElementById('canvas-watermark');
-  let timerTicker;
+const modeloActivo  = models.aparadorSilice; // Asumiendo que el modelo base maneja las variaciones
+const engine        = new SilexEngine({ containerId: 'canvas-container', showStats: true });
+const materialCache = new MaterialCache();
 
-  /* Metadatos de los modelos para el badge del visor */
-  const MODEL_META = {
-    modeloA: {
-      label:  'Modelo A',
-      tag:    'Clásico',
-      recipe: 'Base estándar · Costados madera · Corona',
-    },
-    modeloB: {
-      label:  'Modelo B',
-      tag:    'Expositor',
-      recipe: 'Base con cajón · Vidrio completo · Sin corona',
-    },
-    modeloC: {
-      label:  'Modelo C',
-      tag:    'Minimalista',
-      recipe: 'Base estándar · Costados madera · Tapa plana',
-    },
-  };
+let state = modeloActivo.aplicarReglas({ ...modeloActivo.defaultState });
 
-  function flash(msg) {
+// UI Pura: Ticker y Badges
+const ticker = document.getElementById('ticker-line');
+const badgeName = document.getElementById('badge-name');
+const badgeRecipe = document.getElementById('badge-recipe');
+const watermark = document.getElementById('canvas-watermark');
+let timerTicker;
+
+function flash(msg) {
     ticker.textContent = '› ' + msg;
     ticker.classList.add('visible');
     clearTimeout(timerTicker);
     timerTicker = setTimeout(() => ticker.classList.remove('visible'), 2800);
-  }
+}
 
-  function updateModelBadge(key) {
+const MODEL_META = {
+    modeloA: { label: 'Modelo A', tag: 'CLÁSICO', recipe: 'Base estándar · Costados madera · Corona', ref: 'MOD-A' },
+    modeloB: { label: 'Modelo B', tag: 'EXPOSITOR', recipe: 'Base con cajón · Vidrio completo · Sin corona', ref: 'MOD-B' },
+    modeloC: { label: 'Modelo C', tag: 'MINIMALISTA', recipe: 'Base estándar · Costados madera · Tapa plana', ref: 'MOD-C' },
+};
+
+function updateModelBadge(key) {
     const meta = MODEL_META[key];
     if (!meta) return;
-    badgeName.textContent   = meta.label;
-    badgeRecipe.textContent = meta.recipe;
-    watermark.textContent   = `Aparador · ${meta.label} · ${meta.tag}`;
-  }
+    if (badgeName) badgeName.textContent = meta.label;
+    if (badgeRecipe) badgeRecipe.textContent = meta.recipe;
+    if (watermark) watermark.textContent = `REF · ${meta.ref} · ${meta.tag}`;
+}
 
-  /* ── Sliders ── */
-  const sliderMap = {
-    'ancho-slider':       v => `Ancho → ${v} cm`,
-    'alto-slider':        v => `Alto → ${v} cm`,
-    'profundidad-slider': v => `Profundidad → ${v} cm`,
-    'entrepanos-slider':  v => `Entrepaños → ${v}`,
-    'apertura-slider':    v => `Apertura → ${v}°`,
-  };
-  Object.entries(sliderMap).forEach(([id, fmt]) => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', () => flash(fmt(el.value)));
-  });
+// Función Principal de Re-renderizado
+function rebuild() {
+    const { group, tick } = modeloActivo.build(state, materialCache);
 
-  /* ── Grupos de botones (todos los data-*) ── */
-  const labelMap = {
-    acabado:  v => `Madera → ${v}`,
-    vidrio:   v => `Vidrio → ${v}`,
-    npuertas: v => `Puertas → ${v}`,
-    tipo:     v => `Apertura → ${v}`,
-    temp:     v => `LED → ${v}`,
-    modelo:   v => `Modelo → ${MODEL_META[v]?.label ?? v}`,
-  };
+    engine.setSceneGroup(group);
+    engine.setTickHook(tick);
+    engine.setContactShadowScale(state.ancho * 1.4, state.profundidad * 1.7);
 
-  document.querySelectorAll('[data-acabado],[data-vidrio],[data-npuertas],[data-tipo],[data-temp],[data-modelo]')
-    .forEach(btn => {
-      btn.addEventListener('click', () => {
-        const key   = Object.keys(btn.dataset)[0];
-        const value = btn.dataset[key];
-        const fmt   = labelMap[key];
-        if (fmt) flash(fmt(value));
-        /* Actualizar badge del visor cuando cambia el modelo */
-        if (key === 'modelo') updateModelBadge(value);
-      });
-    });
+    // Actualiza el precio calculado
+    const precioEl = document.getElementById('precio-val');
+    const precioNum = modeloActivo.calcularPrecio(state);
+    if(precioEl) precioEl.textContent = `$${precioNum.toLocaleString('es-MX')}`;
 
-  /* ── LED toggle ── */
-  const ledToggle = document.getElementById('led-toggle');
-  if (ledToggle) {
-    ledToggle.addEventListener('change', () =>
-      flash(`LED → ${ledToggle.checked ? 'encendido' : 'apagado'}`));
-  }
+    updateDimOverlay();
+}
 
-})();
+// Inicialización del Configurador (Conecta UI con State)
+const configurator = new Configurator({
+    onChange: (partialState) => {
+        
+        // Mapeo para el Ticker (Feedback UI)
+        const key = Object.keys(partialState)[0];
+        const val = partialState[key];
+        const labelMap = { 
+            ancho: 'Ancho', alto: 'Alto', profundidad: 'Profundidad', 
+            acabado: 'Madera', vidrio: 'Vidrio', npuertas: 'Puertas', 
+            tipo: 'Apertura', temp: 'LED', modelo: 'Modelo', entrepanos: 'Entrepaños' 
+        };
+        
+        if (key && labelMap[key]) {
+            flash(`${labelMap[key]} → ${val}`);
+        }
+
+        if (key === 'modelo') updateModelBadge(val);
+
+        // Lógica LED UI (Mostrar/Ocultar Fila de Temperatura)
+        const ledToggleEl = document.getElementById('led-toggle');
+        const ledRow = document.getElementById('led-temp-row');
+        if (ledToggleEl && ledRow) {
+            if (ledToggleEl.checked) ledRow.classList.add('visible');
+            else ledRow.classList.remove('visible');
+        }
+
+        // Aplica cambios al estado y reconstruye
+        state = modeloActivo.aplicarReglas({ ...state, ...partialState });
+
+        // Ajustes directos al motor visual (Bloom)
+        if ('temp' in partialState || typeof partialState.led !== 'undefined') {
+            engine.setBloomStrength(state.temp === 'frio' ? 0.45 : 0.30);
+        }
+
+        rebuild();
+    },
+});
+
+// Forzar ajuste del Canvas al Grid
+requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+
+const resizeObserver = new ResizeObserver(() => {
+    window.dispatchEvent(new Event('resize'));
+    updateDimOverlay();
+});
+resizeObserver.observe(document.getElementById('canvas-container'));
+
+// Cotas Sobrepuestas (Blueprint Overlay)
+function updateDimOverlay() {
+    const overlay = document.getElementById('dim-overlay');
+    if (!overlay) return;
+
+    const w = overlay.clientWidth;
+    const h = overlay.clientHeight;
+    if (!w || !h) return;
+
+    const maxBoxW = w * 0.42;
+    const maxBoxH = h * 0.5;
+    const ratio = state.ancho / state.alto;
+    let boxW = maxBoxW, boxH = maxBoxW / ratio;
+    if (boxH > maxBoxH) { boxH = maxBoxH; boxW = maxBoxH * ratio; }
+
+    const cx = w * 0.5;
+    const cy = h * 0.54;
+    const left  = cx - boxW / 2;
+    const right = cx + boxW / 2;
+    const top   = cy - boxH / 2;
+    const bot   = cy + boxH / 2;
+
+    const dimY = bot + 26;
+    const dimX = right + 26;
+
+    overlay.innerHTML = `
+      <div class="dim-line h" style="left:${left}px; top:${dimY}px; width:${boxW}px;"></div>
+      <div class="dim-tick" style="left:${left}px; top:${dimY - 3}px;"></div>
+      <div class="dim-tick" style="left:${right}px; top:${dimY - 3}px;"></div>
+      <div class="dim-label" style="left:${cx}px; top:${dimY - 9}px; transform:translateX(-50%);">${state.ancho} cm</div>
+
+      <div class="dim-line v" style="left:${dimX}px; top:${top}px; height:${boxH}px;"></div>
+      <div class="dim-tick h-tick" style="left:${dimX - 3}px; top:${top}px;"></div>
+      <div class="dim-tick h-tick" style="left:${dimX - 3}px; top:${bot}px;"></div>
+      <div class="dim-label" style="left:${dimX + 9}px; top:${cy}px; transform:translateY(-50%);">${state.alto} cm</div>
+    `;
+}
+
+rebuild();
 </script>
+
 </body>
 </html>
